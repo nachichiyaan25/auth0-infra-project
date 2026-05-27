@@ -1,0 +1,4 @@
+email,password,name,role_name,department,team
+developer2@test.com,Test@123,Developer Two,Developer,Engineering,IAM
+viewer2@test.com,Test@123,Viewer Two,Viewer,Operations,Support
+admin2@test.com,Test@123,Admin Two,Admin,Security,Platform

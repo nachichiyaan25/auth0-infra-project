@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Auth0 Infra Dashboard</title>
+</head>
+<body>
+
+    <h1>Mission Auth0 Infra</h1>
+
+    <h2>User Details</h2>
+
+    <img src="{{ user.picture }}" width="100">
+
+    <p>Name: {{ user.name }}</p>
+    <p>Email: {{ user.email }}</p>
+
+    <br>
+
+    <h3>Custom Claims</h3>
+
+    <p>Roles: {{ roles }}</p>
+    <p>Permissions: {{ permissions}}</p>
+    <p>Department: {{ department }}</p>
+    <p>Connection: {{ connection }}</p>
+     
+    <br>
+
+    <a href="/api/profile/">Test Protected API</a>
+
+    <br><br>
+
+    <a href="/api/admin/">Test Admin API</a>
+
+    <br><br>
+
+    <a href="/logout/">Logout</a>
+
+</body>
+</html>
