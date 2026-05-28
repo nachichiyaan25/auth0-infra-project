@@ -1,5 +1,12 @@
 # Auth0 IAM Automation & Identity Engineering Platform
 
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![Django](https://img.shields.io/badge/Django-5.x-green)
+![Auth0](https://img.shields.io/badge/Auth0-IAM-orange)
+![OAuth2](https://img.shields.io/badge/OAuth2-OIDC-red)
+![JWT](https://img.shields.io/badge/JWT-Validation-purple)
+![RBAC](https://img.shields.io/badge/RBAC-Authorization-darkgreen)
+
 Enterprise-style IAM automation and identity engineering platform built using Auth0, Django, Python, OAuth2/OIDC, JWT validation, RBAC authorization, and cloud-native automation workflows.
 
 This project simulates real-world enterprise IAM systems involving:
@@ -162,6 +169,7 @@ auth0-infra-project/
 ├── dashboard/          # Dashboard and frontend logic
 ├── templates/          # HTML templates
 ├── sample_data/        # Sample CSV onboarding files
+├── screenshots/        #screenshots
 │
 ├── .env.example        # Environment variable template
 ├── .gitignore
