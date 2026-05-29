@@ -6,8 +6,10 @@
 ![OAuth2](https://img.shields.io/badge/OAuth2-OIDC-red)
 ![JWT](https://img.shields.io/badge/JWT-Validation-purple)
 ![RBAC](https://img.shields.io/badge/RBAC-Authorization-darkgreen)
+![Docker](https://img.shields.io/badge/Docker-Containerized-blue)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blueviolet)
 
-Enterprise-style IAM automation and identity engineering platform built using Auth0, Django, Python, OAuth2/OIDC, JWT validation, RBAC authorization, and cloud-native automation workflows.
+Enterprise-style IAM automation and identity engineering platform built using Auth0, Django, Python, OAuth2/OIDC, JWT validation, RBAC authorization, PostgreSQL, Docker, and cloud-native automation workflows.
 
 This project simulates real-world enterprise IAM systems involving:
 
@@ -18,7 +20,9 @@ This project simulates real-world enterprise IAM systems involving:
 * Auth0 Management API integrations
 * Bulk onboarding/deprovisioning
 * Identity orchestration workflows
-* Cloud-native backend engineering
+* Multi-container cloud-native architecture
+* Stateful session persistence
+* Platform engineering & DevOps workflows
 
 ---
 
@@ -96,8 +100,12 @@ This project simulates real-world enterprise IAM systems involving:
 
 * Modular Django project architecture
 * Environment-based configuration management
-* Secure secrets handling using .env
+* Secure secrets handling using `.env`
 * Dockerized cloud-native application deployment
+* Multi-container orchestration using Docker Compose
+* PostgreSQL-backed persistent storage
+* Internal Docker networking & service communication
+* Database readiness orchestration using Netcat (`nc`)
 * Git-based version control
 * Cloud-native engineering roadmap
 
@@ -112,27 +120,70 @@ This project simulates real-world enterprise IAM systems involving:
 | APIs           | REST APIs, Auth0 Management API                 |
 | Authentication | Google OAuth, GitHub OAuth                      |
 | Security       | JWKS Validation, Authorization Decorators       |
-| DevOps         | Git, GitHub, Docker                             |
-| Database       | SQLite (Development)                            |
+| DevOps         | Git, GitHub, Docker, Docker Compose             |
+| Database       | PostgreSQL, SQLite (Development)                |
 | Automation     | Python Automation Workflows                     |
 
 ---
 
-# Dockerized Runtime & Containerization
+# Dockerized Runtime & Multi-Container Orchestration
 
-The entire IAM platform has been containerized using Docker to enable portable, reproducible, and environment-independent deployments.
+The IAM platform has been fully containerized using Docker and orchestrated using Docker Compose to simulate modern cloud-native enterprise deployment architecture.
 
-This allows the platform to run consistently across local systems, cloud environments, CI/CD pipelines, and future Kubernetes infrastructure.
+The application now runs as a multi-container environment consisting of:
 
-## Dockerized Platform Features
+* Django IAM application container
+* PostgreSQL database container
+* Internal Docker networking
+* Persistent PostgreSQL storage volumes
+* Automated database readiness orchestration
 
-* Containerized Django IAM platform
-* Isolated runtime environment
-* Portable deployment architecture
-* Environment variable injection using `.env`
+This architecture closely mirrors real-world platform engineering and DevOps deployment patterns used in enterprise environments.
+
+---
+
+## Containerized Platform Features
+
+* Multi-container orchestration using Docker Compose
+* PostgreSQL-backed persistent session storage
+* Internal Docker DNS-based container communication
+* Database readiness checks using Netcat (`nc`)
 * Automatic database migrations during startup
-* Cloud-native deployment readiness
-* Foundation for Docker Compose & Kubernetes orchestration
+* Portable and reproducible deployment architecture
+* Environment variable injection using `.env`
+* Persistent PostgreSQL volumes
+* Stateless application container architecture
+* Foundation for Kubernetes orchestration & cloud deployments
+
+---
+
+# Multi-Container Architecture
+
+## Services Running
+
+| Service         | Responsibility                     |
+| --------------- | ---------------------------------- |
+| `django_app`    | Django IAM platform                |
+| `postgres_db`   | PostgreSQL database                |
+| `postgres_data` | Persistent database storage volume |
+
+---
+
+## Docker Compose Architecture Flow
+
+```text
+Browser
+   ↓
+Django Container (django_app)
+   ↓
+Internal Docker Network
+   ↓
+PostgreSQL Container (postgres_db)
+   ↓
+Persistent Docker Volume (postgres_data)
+```
+
+---
 
 ## Docker Image Build
 
@@ -140,11 +191,23 @@ This allows the platform to run consistently across local systems, cloud environ
 docker build -t auth0-infra .
 ```
 
-## Run Docker Container
+---
+
+## Start Multi-Container Platform
 
 ```bash
-docker run -p 8000:8000 --env-file .env auth0-infra
+docker compose up --build
 ```
+
+---
+
+## Verify Running Containers
+
+```bash
+docker ps
+```
+
+---
 
 ## Access Application
 
@@ -152,28 +215,40 @@ docker run -p 8000:8000 --env-file .env auth0-infra
 http://localhost:8000
 ```
 
-## Containerized Runtime
+---
 
-### Docker Container Running
+# Multi-Container Runtime Screenshots
 
-![Docker Container](screenshots/docker-container-runtime.png)
+## Docker Compose Running Containers
 
-### Application Running Inside Container
+![Docker Compose Containers](screenshots/docker-compose-containers.png)
 
-![Dockerized App](screenshots/dockerized-app-login.png)
+## Django + PostgreSQL Runtime Logs
 
-### Docker Build & Runtime Logs
+![Runtime Logs](screenshots/docker-compose-runtime-logs.png)
 
-![Docker Build](screenshots/docker-build-runtime.png)
+## PostgreSQL Session Storage Verification
 
-## Docker Architecture Notes
+![PostgreSQL Session Storage](screenshots/postgres-session-storage.png)
 
-* Django application runs inside an isolated containerized runtime
-* Runtime dependencies are packaged within the Docker image
-* Environment variables are securely injected during container startup
-* Database migrations execute automatically during initialization
-* Containers are stateless by default and recreated dynamically
-* Designed for future multi-container orchestration using Docker Compose and Kubernetes
+## Application Running Through Multi-Container Architecture
+
+![Dockerized Dashboard](screenshots/dockerized-platform-dashboard.png)
+
+---
+
+# Docker Compose & PostgreSQL Architecture Notes
+
+* Django application runs inside an isolated application container
+* PostgreSQL runs as an independent database service container
+* Containers communicate internally using Docker DNS-based networking
+* `db` acts as the internal hostname for PostgreSQL communication
+* PostgreSQL data persists using Docker named volumes
+* Django sessions are now stored inside PostgreSQL
+* Session persistence continues even after container recreation
+* Database readiness checks prevent startup race conditions
+* Application architecture now resembles real-world cloud-native platform deployments
+* Designed for future Kubernetes, Terraform, and CI/CD integrations
 
 ---
 
@@ -189,6 +264,10 @@ This platform simulates enterprise IAM architecture involving:
 * Auth0 Management API automation
 * Role-based access control workflows
 * Identity lifecycle orchestration
+* Multi-container Docker Compose orchestration
+* PostgreSQL-backed session persistence
+* Internal Docker networking & service communication
+* Database readiness orchestration using Netcat
 
 Authentication flow:
 
@@ -196,9 +275,9 @@ User → Django App → Auth0 → Social Provider (Google/GitHub) → Auth0 → 
 
 ---
 
-# IAM Concepts Implemented
+# IAM and DevOps Concepts Implemented
 
-This project explores and implements core enterprise IAM concepts including:
+This project explores and implements core enterprise IAM and DevOps concepts including:
 
 * OAuth2 Authorization Code Flow
 * OpenID Connect (OIDC)
@@ -208,6 +287,7 @@ This project explores and implements core enterprise IAM concepts including:
 * Permission-Based Authorization
 * Identity Federation
 * Session Management
+* Stateful Session Persistence
 * User Lifecycle Management
 * Onboarding & Deprovisioning
 * Bulk Provisioning Workflows
@@ -215,6 +295,10 @@ This project explores and implements core enterprise IAM concepts including:
 * Machine-to-Machine Authentication
 * Auth0 Actions & Custom Claims
 * Secure API Authorization
+* Containerized Application Runtime
+* Multi-Container Orchestration
+* Docker Networking & Service Discovery
+* Persistent Database Volumes
 
 ---
 
@@ -223,15 +307,16 @@ This project explores and implements core enterprise IAM concepts including:
 ```bash
 auth0-infra-project/
 │
-├── api/                # Protected APIs
-├── authentication/     # JWT validation & authorization logic
-├── automation/         # Provisioning & lifecycle automation
-├── dashboard/          # Dashboard and frontend logic
-├── templates/          # HTML templates
-├── sample_data/        # Sample CSV onboarding files
-├── screenshots/        # Project screenshots
+├── api/                     # Protected APIs
+├── authentication/          # JWT validation & authorization logic
+├── automation/              # Provisioning & lifecycle automation
+├── dashboard/               # Dashboard and frontend logic
+├── templates/               # HTML templates
+├── sample_data/             # Sample CSV onboarding files
+├── screenshots/             # Project screenshots
 │
 ├── Dockerfile
+├── docker-compose.yml
 ├── .dockerignore
 ├── .env.example
 ├── .gitignore
@@ -250,11 +335,15 @@ git clone https://github.com/nachichiyaan25/auth0-infra-project.git
 cd auth0-infra-project
 ```
 
+---
+
 ## Create Virtual Environment
 
 ```bash
 python -m venv venv
 ```
+
+---
 
 ## Activate Environment
 
@@ -270,15 +359,21 @@ Windows:
 venv\Scripts\activate
 ```
 
+---
+
 ## Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
+---
+
 ## Configure Environment Variables
 
 Create `.env` using `.env.example`
+
+---
 
 ## Run Django Server
 
@@ -288,7 +383,7 @@ python manage.py runserver
 
 ---
 
-# Docker Setup Guide
+# Docker & Docker Compose Setup Guide
 
 ## Build Docker Image
 
@@ -296,11 +391,15 @@ python manage.py runserver
 docker build -t auth0-infra .
 ```
 
-## Run Docker Container
+---
+
+## Start Multi-Container Platform
 
 ```bash
-docker run -p 8000:8000 --env-file .env auth0-infra
+docker compose up --build
 ```
+
+---
 
 ## Verify Running Containers
 
@@ -308,11 +407,47 @@ docker run -p 8000:8000 --env-file .env auth0-infra
 docker ps
 ```
 
-## Stop Running Container
+---
+
+## View Runtime Logs
 
 ```bash
-docker stop <container_id>
+docker compose logs
 ```
+
+---
+
+## Access PostgreSQL Container
+
+```bash
+docker exec -it postgres_db psql -U postgres
+```
+
+---
+
+## Connect PostgreSQL Database
+
+```sql
+\c auth0infra
+```
+
+---
+
+## View Django Session Storage
+
+```sql
+SELECT * FROM django_session;
+```
+
+---
+
+## Stop Multi-Container Platform
+
+```bash
+docker compose down
+```
+
+---
 
 ## Remove Stopped Containers
 
@@ -322,13 +457,23 @@ docker container prune
 
 ---
 
+## Remove Unused Docker Volumes
+
+```bash
+docker volume prune
+```
+
+---
+
 # Future Roadmap
 
-* Docker Compose multi-container orchestration
-* PostgreSQL integration
-* Kubernetes deployment
-* Terraform infrastructure automation
-* GitHub Actions CI/CD pipelines
+* AWS EC2 cloud deployment
+* DockerHub image publishing
+* GitHub Actions CI/CD deployment pipeline
+* Infrastructure provisioning using Terraform
+* Kubernetes container orchestration
+* NGINX reverse proxy integration
+* Production-grade secrets management
 * Auth0 Organizations
 * SCIM provisioning
 * MFA & Adaptive Authentication
