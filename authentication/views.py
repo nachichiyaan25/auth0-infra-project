@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from .auth import oauth
 import os
 import jwt
+from automation.services import assign_default_role_if_missing
 
 
 # Create your views here.
@@ -25,6 +26,11 @@ def callback(request):
     access_token = token.get('access_token')
     id_token = token.get('id_token')
     userinfo = token.get('userinfo')
+
+    user_id = userinfo.get("sub")
+
+    assign_default_role_if_missing(user_id)
+
 
     # Decode access token WITHOUT signature verification
     # ONLY for learning/debugging purpose

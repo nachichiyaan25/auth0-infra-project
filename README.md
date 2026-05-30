@@ -8,27 +8,31 @@
 ![RBAC](https://img.shields.io/badge/RBAC-Authorization-darkgreen)
 ![Docker](https://img.shields.io/badge/Docker-Containerized-blue)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blueviolet)
+![AWS](https://img.shields.io/badge/AWS-EC2-orange)
+![CI/CD](https://img.shields.io/badge/GitHubActions-CI/CD-black)
 
-Enterprise-style IAM automation and identity engineering platform built using Auth0, Django, Python, OAuth2/OIDC, JWT validation, RBAC authorization, PostgreSQL, Docker, and cloud-native automation workflows.
+Enterprise-style IAM automation and cloud-native identity engineering platform built using Auth0, Django, Python, OAuth2/OIDC, JWT validation, RBAC authorization, PostgreSQL, Docker, AWS EC2, and GitHub Actions CI/CD workflows.
 
 This project simulates real-world enterprise IAM systems involving:
 
 * Secure authentication and authorization
 * JWT validation using JWKS
 * Role-Based Access Control (RBAC)
+* Dynamic role assignment workflows
 * User lifecycle automation
 * Auth0 Management API integrations
 * Bulk onboarding/deprovisioning
 * Identity orchestration workflows
-* Multi-container cloud-native architecture
+* Cloud-native multi-container architecture
 * Stateful session persistence
 * Platform engineering & DevOps workflows
+* Automated CI/CD cloud deployments
 
 ---
 
 # Dashboard Overview
 
-## IAM Dashboard
+## Modern IAM Dashboard
 
 ![Dashboard](screenshots/dashboard.png)
 
@@ -63,6 +67,7 @@ This project simulates real-world enterprise IAM systems involving:
 * Secure audience, issuer, and signature validation
 * Session-based authentication using Django
 * Google and GitHub social login integrations
+* Environment-driven deployment configuration
 
 ## Authorization & RBAC
 
@@ -71,6 +76,7 @@ This project simulates real-world enterprise IAM systems involving:
 * Custom authorization decorators
 * Role-aware dashboard rendering
 * Dynamic permission enforcement
+* Automatic default role assignment for newly authenticated users
 
 ## Identity Lifecycle Automation
 
@@ -79,6 +85,7 @@ This project simulates real-world enterprise IAM systems involving:
 * Metadata orchestration using user_metadata and app_metadata
 * User blocking and deprovisioning workflows
 * Hard user deletion automation
+* Just-In-Time (JIT) role provisioning concepts
 
 ## Bulk Provisioning Engine
 
@@ -106,23 +113,82 @@ This project simulates real-world enterprise IAM systems involving:
 * PostgreSQL-backed persistent storage
 * Internal Docker networking & service communication
 * Database readiness orchestration using Netcat (`nc`)
+* GitHub Actions CI/CD deployment automation
+* AWS EC2 cloud deployment
+* DockerHub container registry integration
 * Git-based version control
-* Cloud-native engineering roadmap
 
 ---
 
 # Tech Stack
 
-| Category       | Technologies                                    |
-| -------------- | ----------------------------------------------- |
-| IAM & Identity | Auth0, OAuth2, OpenID Connect (OIDC), JWT, RBAC |
-| Backend        | Python, Django, Django REST Framework           |
-| APIs           | REST APIs, Auth0 Management API                 |
-| Authentication | Google OAuth, GitHub OAuth                      |
-| Security       | JWKS Validation, Authorization Decorators       |
-| DevOps         | Git, GitHub, Docker, Docker Compose             |
-| Database       | PostgreSQL, SQLite (Development)                |
-| Automation     | Python Automation Workflows                     |
+| Category       | Technologies                                        |
+| -------------- | --------------------------------------------------- |
+| IAM & Identity | Auth0, OAuth2, OpenID Connect (OIDC), JWT, RBAC     |
+| Backend        | Python, Django, Django REST Framework               |
+| APIs           | REST APIs, Auth0 Management API                     |
+| Authentication | Google OAuth, GitHub OAuth                          |
+| Security       | JWKS Validation, Authorization Decorators           |
+| DevOps         | Git, GitHub, Docker, Docker Compose, GitHub Actions |
+| Cloud          | AWS EC2                                             |
+| Database       | PostgreSQL, SQLite (Development)                    |
+| Automation     | Python Automation Workflows                         |
+
+---
+
+# Cloud-Native Platform Architecture
+
+This platform simulates enterprise IAM and DevOps architecture involving:
+
+* Auth0 as Identity Provider (IdP)
+* Django as relying application/backend platform
+* OAuth2/OIDC authentication flows
+* JWT-based authorization
+* JWKS-based token validation
+* Auth0 Management API automation
+* Role-based access control workflows
+* Identity lifecycle orchestration
+* Multi-container Docker Compose orchestration
+* PostgreSQL-backed session persistence
+* DockerHub artifact registry
+* AWS EC2 cloud deployment
+* GitHub Actions CI/CD automation
+
+Authentication flow:
+
+```text
+User
+   ↓
+Django Application
+   ↓
+Auth0
+   ↓
+Social Provider (Google/GitHub)
+   ↓
+Auth0
+   ↓
+Django Dashboard
+```
+
+Deployment flow:
+
+```text
+Developer Push
+     ↓
+GitHub Repository
+     ↓
+GitHub Actions CI/CD
+     ↓
+Docker Image Build
+     ↓
+DockerHub Registry
+     ↓
+AWS EC2 Deployment
+     ↓
+Docker Compose Runtime
+     ↓
+Django + PostgreSQL Containers
+```
 
 ---
 
@@ -130,7 +196,7 @@ This project simulates real-world enterprise IAM systems involving:
 
 The IAM platform has been fully containerized using Docker and orchestrated using Docker Compose to simulate modern cloud-native enterprise deployment architecture.
 
-The application now runs as a multi-container environment consisting of:
+The application runs as a multi-container environment consisting of:
 
 * Django IAM application container
 * PostgreSQL database container
@@ -138,7 +204,7 @@ The application now runs as a multi-container environment consisting of:
 * Persistent PostgreSQL storage volumes
 * Automated database readiness orchestration
 
-This architecture closely mirrors real-world platform engineering and DevOps deployment patterns used in enterprise environments.
+This architecture closely resembles real-world platform engineering and DevOps deployment patterns used in enterprise environments.
 
 ---
 
@@ -154,6 +220,36 @@ This architecture closely mirrors real-world platform engineering and DevOps dep
 * Persistent PostgreSQL volumes
 * Stateless application container architecture
 * Foundation for Kubernetes orchestration & cloud deployments
+
+---
+
+# IAM & DevOps Concepts Implemented
+
+This project explores and implements core enterprise IAM and DevOps concepts including:
+
+* OAuth2 Authorization Code Flow
+* OpenID Connect (OIDC)
+* JWT Authentication & Validation
+* JWKS Public Key Verification
+* Role-Based Access Control (RBAC)
+* Permission-Based Authorization
+* Identity Federation
+* Session Management
+* Stateful Session Persistence
+* User Lifecycle Management
+* Onboarding & Deprovisioning
+* Bulk Provisioning Workflows
+* Identity Metadata Management
+* Machine-to-Machine Authentication
+* Just-In-Time (JIT) Provisioning
+* Auth0 Actions & Custom Claims
+* Secure API Authorization
+* Containerized Application Runtime
+* Multi-Container Orchestration
+* Docker Networking & Service Discovery
+* Persistent Database Volumes
+* Cloud Deployment Automation
+* CI/CD Workflows
 
 ---
 
@@ -185,120 +281,63 @@ Persistent Docker Volume (postgres_data)
 
 ---
 
-## Docker Image Build
+# Cloud Deployment & CI/CD Automation
 
-```bash
-docker build -t auth0-infra .
-```
+The IAM platform has been fully deployed to AWS EC2 using Docker, Docker Compose, DockerHub, and GitHub Actions CI/CD automation.
 
----
+The deployment pipeline now supports:
 
-## Start Multi-Container Platform
+* Automated Docker image builds
+* DockerHub image publishing
+* Automated EC2 deployments
+* GitHub Actions CI/CD workflows
+* Elastic IP-based stable public access
+* Environment-driven cloud configuration
+* Production-style container orchestration
+* Persistent PostgreSQL-backed session storage
 
-```bash
-docker compose up --build
-```
-
----
-
-## Verify Running Containers
-
-```bash
-docker ps
-```
+This architecture now closely resembles real-world cloud-native DevOps deployment patterns used in enterprise environments.
 
 ---
 
-## Access Application
+## Cloud & CI/CD Features
 
-```text
-http://localhost:8000
-```
+* Automated deployment on every Git push
+* GitHub Actions-based CI/CD workflows
+* DockerHub container registry integration
+* EC2-hosted cloud-native deployment
+* Elastic IP-based stable platform access
+* Environment-driven deployment configuration
+* Automated container recreation during deployments
+* Cloud-ready platform engineering architecture
 
 ---
 
-# Multi-Container Runtime Screenshots
+# Cloud Deployment Screenshots
 
-## Docker Compose Running Containers
+## GitHub Actions CI/CD Pipeline
 
-![Docker Compose Containers](screenshots/docker-compose-containers.png)
+![GitHub Actions](screenshots/github-actions-success.png)
 
-## Django + PostgreSQL Runtime Logs
+## IAM Platform Running on AWS EC2
+
+![AWS EC2 Platform](screenshots/ec2-live-platform.png)
+
+## DockerHub Published Image
+
+![DockerHub Image](screenshots/dockerhub-image.png)
+
+## Running Containers Inside EC2
+
+![EC2 Containers](screenshots/ec2-docker-ps.png)
+
+## Docker Compose Runtime Logs
 
 ![Runtime Logs](screenshots/docker-compose-runtime-logs.png)
 
-## PostgreSQL Session Storage Verification
+## PostgreSQL Session Persistence
 
-![PostgreSQL Session Storage](screenshots/postgres-session-storage.png)
-
-## Application Running Through Multi-Container Architecture
-
-![Dockerized Dashboard](screenshots/dockerized-platform-dashboard.png)
-
----
-
-# Docker Compose & PostgreSQL Architecture Notes
-
-* Django application runs inside an isolated application container
-* PostgreSQL runs as an independent database service container
-* Containers communicate internally using Docker DNS-based networking
-* `db` acts as the internal hostname for PostgreSQL communication
-* PostgreSQL data persists using Docker named volumes
-* Django sessions are now stored inside PostgreSQL
-* Session persistence continues even after container recreation
-* Database readiness checks prevent startup race conditions
-* Application architecture now resembles real-world cloud-native platform deployments
-* Designed for future Kubernetes, Terraform, and CI/CD integrations
-
----
-
-# Architecture Overview
-
-This platform simulates enterprise IAM architecture involving:
-
-* Auth0 as Identity Provider (IdP)
-* Django as relying application/backend platform
-* OAuth2/OIDC authentication flows
-* JWT-based authorization
-* JWKS-based token validation
-* Auth0 Management API automation
-* Role-based access control workflows
-* Identity lifecycle orchestration
-* Multi-container Docker Compose orchestration
-* PostgreSQL-backed session persistence
-* Internal Docker networking & service communication
-* Database readiness orchestration using Netcat
-
-Authentication flow:
-
-User → Django App → Auth0 → Social Provider (Google/GitHub) → Auth0 → Django App
-
----
-
-# IAM and DevOps Concepts Implemented
-
-This project explores and implements core enterprise IAM and DevOps concepts including:
-
-* OAuth2 Authorization Code Flow
-* OpenID Connect (OIDC)
-* JWT Authentication & Validation
-* JWKS Public Key Verification
-* Role-Based Access Control (RBAC)
-* Permission-Based Authorization
-* Identity Federation
-* Session Management
-* Stateful Session Persistence
-* User Lifecycle Management
-* Onboarding & Deprovisioning
-* Bulk Provisioning Workflows
-* Identity Metadata Management
-* Machine-to-Machine Authentication
-* Auth0 Actions & Custom Claims
-* Secure API Authorization
-* Containerized Application Runtime
-* Multi-Container Orchestration
-* Docker Networking & Service Discovery
-* Persistent Database Volumes
+![PostgreSQL Sessions](screenshots/postgres-session-storage.png)
 
 ---
 
@@ -314,6 +353,10 @@ auth0-infra-project/
 ├── templates/               # HTML templates
 ├── sample_data/             # Sample CSV onboarding files
 ├── screenshots/             # Project screenshots
+│
+├── .github/
+│   └── workflows/
+│       └── deploy.yml       # GitHub Actions CI/CD pipeline
 │
 ├── Dockerfile
 ├── docker-compose.yml
@@ -332,6 +375,7 @@ auth0-infra-project/
 
 ```bash
 git clone https://github.com/nachichiyaan25/auth0-infra-project.git
+
 cd auth0-infra-project
 ```
 
@@ -383,12 +427,12 @@ python manage.py runserver
 
 ---
 
-# Docker & Docker Compose Setup Guide
+# Docker & Docker Compose Setup
 
 ## Build Docker Image
 
 ```bash
-docker build -t auth0-infra .
+docker build -t auth0-infra-platform .
 ```
 
 ---
@@ -449,28 +493,49 @@ docker compose down
 
 ---
 
-## Remove Stopped Containers
+# AWS EC2 Deployment
+
+## Build & Push Docker Image
 
 ```bash
-docker container prune
+docker build -t auth0-infra-platform .
+
+docker tag auth0-infra-platform nachichiyaan25/auth0-infra-platform:latest
+
+docker push nachichiyaan25/auth0-infra-platform:latest
 ```
 
 ---
 
-## Remove Unused Docker Volumes
+## Deploy Containers Inside EC2
 
 ```bash
-docker volume prune
+docker compose down
+
+docker compose pull
+
+docker compose up -d
 ```
+
+---
+
+# GitHub Actions CI/CD Workflow
+
+The CI/CD pipeline automatically:
+
+* Builds latest Docker image
+* Pushes image to DockerHub
+* Connects to EC2 through SSH
+* Pulls latest deployment image
+* Restarts containers automatically
+
+Deployment now occurs automatically on every push to the `main` branch.
 
 ---
 
 # Future Roadmap
 
-* AWS EC2 cloud deployment
-* DockerHub image publishing
-* GitHub Actions CI/CD deployment pipeline
-* Infrastructure provisioning using Terraform
+* Terraform infrastructure provisioning
 * Kubernetes container orchestration
 * NGINX reverse proxy integration
 * Production-grade secrets management
@@ -481,7 +546,6 @@ docker volume prune
 * Universal Login customization
 * Monitoring & observability stack
 * Prometheus & Grafana integration
-* Cloud deployment on AWS
 * Audit logging & reconciliation engine
 * Agentic AI integrations for IAM workflows
 

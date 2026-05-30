@@ -290,3 +290,42 @@ def delete_user(user_id):
     )
 
     return response.status_code
+
+
+def get_user_roles(user_id):
+
+    access_token = get_management_api_token()
+
+    headers = {
+        "Authorization": f"Bearer {access_token}"   
+    }
+
+    response = requests.get(
+    f"https://{AUTH0_DOMAIN}"
+    f"/api/v2/users/{user_id}/roles",
+    headers=headers
+    )   
+
+    return response.json()
+
+
+def assign_default_role_if_missing(user_id):
+
+    existing_roles = get_user_roles(user_id)
+
+    if existing_roles:
+        return
+
+    viewer_role_id = get_role_id_by_name("Viewer")
+
+    if viewer_role_id:
+
+        assign_role_to_user(
+            user_id,
+            viewer_role_id
+        )
+
+
+
+
+
