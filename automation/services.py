@@ -294,7 +294,7 @@ def delete_user(user_id):
 
 def get_user_roles(user_id):
 
-    access_token = get_management_api_token()
+    access_token = fetch_access_token()
 
     headers = {
         "Authorization": f"Bearer {access_token}"   
@@ -308,23 +308,35 @@ def get_user_roles(user_id):
 
     return response.json()
 
-
 def assign_default_role_if_missing(user_id):
 
     existing_roles = get_user_roles(user_id)
 
-    if existing_roles:
+    # Validate API response
+    if not isinstance(existing_roles, list):
+        print("Failed to fetch roles:", existing_roles)
         return
 
+    # Extract role names
+    role_names = [role.get("name") for role in existing_roles]
+
+    print("Existing Roles:", role_names)
+
+    # If user already has ANY role, skip assignment
+    if role_names:
+        return
+
+    # Fetch Viewer role ID
     viewer_role_id = get_role_id_by_name("Viewer")
 
-    if viewer_role_id:
+    if not viewer_role_id:
+        return
 
-        assign_role_to_user(
-            user_id,
-            viewer_role_id
-        )
-
+    # Assign Viewer role
+    assign_role_to_user(
+        user_id,
+        viewer_role_id
+    )
 
 
 

@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'auth0_infra',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'db',
+        'HOST': os.getenv("DB_HOST"),
         'PORT': '5432',
     }
 }

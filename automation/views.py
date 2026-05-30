@@ -3,7 +3,7 @@ import json
 from django.http import JsonResponse
 import csv
 from django.views.decorators.csrf import csrf_exempt
-from .services import get_management_api_token, get_all_users, get_roles, assign_role_to_user, create_user, search_user_by_email, update_user_metadata, block_user, remove_role_from_user, delete_user, get_role_id_by_name
+from .services import get_management_api_token, get_all_users, get_roles, assign_role_to_user, create_user, search_user_by_email, update_user_metadata, block_user, remove_role_from_user, delete_user, get_role_id_by_name, get_user_roles
 
 # Create your views here.
 
@@ -431,3 +431,14 @@ def import_users_from_csv(request):
         return JsonResponse({
             "error": str(e)
         }, status=500)
+    
+
+def debug_user_roles(request):
+
+    user_id = request.GET.get("user_id")
+
+    roles = get_user_roles(user_id)
+
+    return JsonResponse({
+        "roles_response": roles
+    })
