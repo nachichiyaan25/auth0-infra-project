@@ -51,5 +51,5 @@ def logout(request):
     return redirect(
         f"https://{os.getenv('AUTH0_DOMAIN')}/v2/logout?"
         f"client_id={os.getenv('AUTH0_CLIENT_ID')}&"
-        f"returnTo=http://localhost:8000"
+        f"returnTo={os.getenv('APP_BASE_URL')}"
     )
