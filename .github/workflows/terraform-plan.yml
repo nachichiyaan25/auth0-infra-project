@@ -49,26 +49,9 @@ jobs:
         working-directory: ${{ steps.env.outputs.path }}
         run: terraform fmt -check
 
-      - name: Debug Environment
-        run: |
-          echo "Base Ref: ${{ github.base_ref }}"
-          echo "Selected Environment: ${{ github.base_ref == 'main' && 'prod' || 'dev' }}"
-
-          echo ""
-          echo "Checking TF_VAR variables..."
-
-          env | grep "^TF_VAR_" || echo "No TF_VAR variables found"
-
       - name: Terraform Init
         working-directory: ${{ steps.env.outputs.path }}
         run: terraform init
-
-      - name: Terraform Environment Check
-        working-directory: ${{ steps.env.outputs.path }}
-        run: |
-          terraform version
-          pwd
-          ls -la
 
       - name: Terraform Validate
         working-directory: ${{ steps.env.outputs.path }}
@@ -78,9 +61,46 @@ jobs:
         id: plan
         working-directory: ${{ steps.env.outputs.path }}
         run: |
-          terraform plan \
-          -input=false \
-          -no-color \
-          -lock-timeout=30s
+          terraform plan -input=false -no-color -lock-timeout=30s | tee plan.txt
+
+          echo "PLAN<<EOF" >> $GITHUB_ENV
+          cat plan.txt >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
                 
-      
+      - name: Comment Terraform Plan
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `
+            ## Terraform Plan 📖
+
+            <details>
+            <summary>Show Terraform Plan</summary>
+
+            \`\`\`
+            ${process.env.PLAN}
+            \`\`\`
+
+            </details>
+
+            ---
+            Triggered by @${{ github.actor }}
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            });
+        env:
+          PLAN: ${{ env.PLAN }}
+
+
+      - name: Upload Plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan
+          path: ${{ steps.env.outputs.path }}/plan.txt
