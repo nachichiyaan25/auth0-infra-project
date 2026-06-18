@@ -110,4 +110,5 @@ variable "auth0_m2m_client_secret" {
 
 variable "auth0_management_api_audience" {
   type      = string
+  sensitive = true
 }

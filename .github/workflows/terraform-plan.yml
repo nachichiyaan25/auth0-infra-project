@@ -49,6 +49,16 @@ jobs:
         working-directory: ${{ steps.env.outputs.path }}
         run: terraform fmt -check
 
+      - name: Debug Environment
+        run: |
+          echo "Base Ref: ${{ github.base_ref }}"
+          echo "Selected Environment: ${{ github.base_ref == 'main' && 'prod' || 'dev' }}"
+
+          echo ""
+          echo "Checking TF_VAR variables..."
+
+          env | grep "^TF_VAR_" || echo "No TF_VAR variables found"
+
       - name: Terraform Init
         working-directory: ${{ steps.env.outputs.path }}
         run: terraform init
