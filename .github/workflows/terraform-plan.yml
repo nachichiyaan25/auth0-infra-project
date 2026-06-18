@@ -1,0 +1,111 @@
+name: Terraform Plan
+
+on:
+  pull_request:
+    branches:
+      - dev
+      - main
+      
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  terraform-plan:
+    runs-on: ubuntu-latest
+
+    environment: ${{ github.base_ref == 'main' && 'prod' || 'dev' }}
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ap-south-1
+
+      TF_VAR_secret_key: ${{ secrets.TF_VAR_SECRET_KEY }}
+      TF_VAR_auth0_client_id: ${{ secrets.TF_VAR_AUTH0_CLIENT_ID }}
+      TF_VAR_auth0_client_secret: ${{ secrets.TF_VAR_AUTH0_CLIENT_SECRET }}
+      TF_VAR_auth0_domain: ${{ secrets.TF_VAR_AUTH0_DOMAIN }}
+      TF_VAR_auth0_audience: ${{ secrets.TF_VAR_AUTH0_AUDIENCE }}
+      TF_VAR_auth0_m2m_client_id: ${{ secrets.TF_VAR_AUTH0_M2M_CLIENT_ID }}
+      TF_VAR_auth0_m2m_client_secret: ${{ secrets.TF_VAR_AUTH0_M2M_CLIENT_SECRET }}
+      TF_VAR_auth0_management_api_audience: ${{ secrets.TF_VAR_AUTH0_MANAGEMENT_API_AUDIENCE }}
+
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.15.2
+
+      - name: Select Environment
+        id: env
+        run: |
+          if [[ "${{ github.base_ref }}" == "main" ]]; then
+            echo "path=terraform/environments/prod" >> $GITHUB_OUTPUT
+          else
+            echo "path=terraform/environments/dev" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Terraform Format
+        working-directory: ${{ steps.env.outputs.path }}
+        run: terraform fmt -check
+
+      - name: Terraform Init
+        working-directory: ${{ steps.env.outputs.path }}
+        run: terraform init
+
+      - name: Terraform Validate
+        working-directory: ${{ steps.env.outputs.path }}
+        run: terraform validate
+
+      - name: Terraform Plan
+        id: plan
+        working-directory: ${{ steps.env.outputs.path }}
+        run: |
+          terraform plan -input=false -no-color -lock-timeout=30s | tee plan.txt
+
+          echo "PLAN<<EOF" >> $GITHUB_ENV
+          cat plan.txt >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+                
+      - name: Comment Terraform Plan
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `
+            ## Terraform Plan 📖
+
+            <details>
+            <summary>Show Terraform Plan</summary>
+
+            \`\`\`
+            ${process.env.PLAN}
+            \`\`\`
+
+            </details>
+
+            ---
+            Triggered by @${{ github.actor }}
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            });
+        env:
+          PLAN: ${{ env.PLAN }}
+
+
+      - name: Upload Plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan
+          path: ${{ steps.env.outputs.path }}/plan.txt

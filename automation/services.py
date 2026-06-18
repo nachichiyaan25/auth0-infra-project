@@ -320,8 +320,6 @@ def assign_default_role_if_missing(user_id):
     # Extract role names
     role_names = [role.get("name") for role in existing_roles]
 
-    print("Existing Roles:", role_names)
-
     # If user already has ANY role, skip assignment
     if role_names:
         return

@@ -11,6 +11,7 @@ from automation.services import assign_default_role_if_missing
 # Create your views here.
 
 def login(request):
+
     return oauth.auth0.authorize_redirect(
         request,
         request.build_absolute_uri(reverse('callback')),
