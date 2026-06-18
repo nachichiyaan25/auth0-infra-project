@@ -17,6 +17,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_DEFAULT_REGION: ap-south-1
 
+      TF_VAR_secret_key: ${{ secrets.TF_VAR_SECRET_KEY }}
       TF_VAR_auth0_client_id: ${{ secrets.TF_VAR_AUTH0_CLIENT_ID }}
       TF_VAR_auth0_client_secret: ${{ secrets.TF_VAR_AUTH0_CLIENT_SECRET }}
       TF_VAR_auth0_domain: ${{ secrets.TF_VAR_AUTH0_DOMAIN }}
@@ -62,62 +63,24 @@ jobs:
         working-directory: ${{ steps.env.outputs.path }}
         run: terraform init
 
+      - name: Terraform Environment Check
+        working-directory: ${{ steps.env.outputs.path }}
+        run: |
+          terraform version
+          pwd
+          ls -la
+
       - name: Terraform Validate
         working-directory: ${{ steps.env.outputs.path }}
         run: terraform validate
-
-      - name: Test Terraform Variable Injection
-        working-directory: ${{ steps.env.outputs.path }}
-        run: |
-          echo "secret_key=$TF_VAR_SECRET_KEY"
-          echo "auth0_client_id=$TF_VAR_AUTH0_CLIENT_ID"
-
-          terraform console <<EOF
-          var.secret_key
-          EOF
 
       - name: Terraform Plan
         id: plan
         working-directory: ${{ steps.env.outputs.path }}
         run: |
           terraform plan \
-          -var="secret_key=${{ secrets.TF_VAR_secret_key }}" \
           -input=false \
           -no-color \
           -lock-timeout=30s
                 
-      - name: Comment Terraform Plan
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const output = `
-            ## Terraform Plan 📖
-
-            <details>
-            <summary>Show Terraform Plan</summary>
-
-            \`\`\`
-            ${process.env.PLAN}
-            \`\`\`
-
-            </details>
-
-            ---
-            Triggered by @${{ github.actor }}
-            `;
-
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            });
-        env:
-          PLAN: ${{ env.PLAN }}
-
-      - name: Upload Plan
-        uses: actions/upload-artifact@v4
-        with:
-          name: terraform-plan
-          path: ${{ steps.env.outputs.path }}/plan.txt
+      
