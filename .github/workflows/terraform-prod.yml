@@ -18,14 +18,14 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_DEFAULT_REGION: ap-south-1
 
-      TF_VAR_SECRET_KEY: ${{ secrets.TF_VAR_SECRET_KEY }}
-      TF_VAR_AUTH0_CLIENT_ID: ${{ secrets.TF_VAR_AUTH0_CLIENT_ID }}
-      TF_VAR_AUTH0_CLIENT_SECRET: ${{ secrets.TF_VAR_AUTH0_CLIENT_SECRET }}
-      TF_VAR_AUTH0_DOMAIN: ${{ secrets.TF_VAR_AUTH0_DOMAIN }}
-      TF_VAR_AUTH0_AUDIENCE: ${{ secrets.TF_VAR_AUTH0_AUDIENCE }}
-      TF_VAR_AUTH0_M2M_CLIENT_ID: ${{ secrets.TF_VAR_AUTH0_M2M_CLIENT_ID }}
-      TF_VAR_AUTH0_M2M_CLIENT_SECRET: ${{ secrets.TF_VAR_AUTH0_M2M_CLIENT_SECRET }}
-      TF_VAR_AUTH0_MANAGEMENT_API_AUDIENCE: ${{ secrets.TF_VAR_AUTH0_MANAGEMENT_API_AUDIENCE }}
+      TF_VAR_secret_key: ${{ secrets.TF_VAR_SECRET_KEY }}
+      TF_VAR_auth0_client_id: ${{ secrets.TF_VAR_AUTH0_CLIENT_ID }}
+      TF_VAR_auth0_client_secret: ${{ secrets.TF_VAR_AUTH0_CLIENT_SECRET }}
+      TF_VAR_auth0_domain: ${{ secrets.TF_VAR_AUTH0_DOMAIN }}
+      TF_VAR_auth0_audience: ${{ secrets.TF_VAR_AUTH0_AUDIENCE }}
+      TF_VAR_auth0_m2m_client_id: ${{ secrets.TF_VAR_AUTH0_M2M_CLIENT_ID }}
+      TF_VAR_auth0_m2m_client_secret: ${{ secrets.TF_VAR_AUTH0_M2M_CLIENT_SECRET }}
+      TF_VAR_auth0_management_api_audience: ${{ secrets.TF_VAR_AUTH0_MANAGEMENT_API_AUDIENCE }}
 
     steps:
 
@@ -43,4 +43,4 @@ jobs:
 
       - name: Terraform Apply
         working-directory: terraform/environments/prod
-        run: terraform apply -auto-approve
+        run: terraform apply -input=false -auto-approve -lock-timeout=30s
