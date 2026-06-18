@@ -61,12 +61,11 @@ jobs:
         id: plan
         working-directory: ${{ steps.env.outputs.path }}
         run: |
-          terraform plan -no-color > plan.txt
-
-          echo "PLAN<<EOF" >> $GITHUB_ENV
-          cat plan.txt >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-      
+          terraform plan \
+          -input=false \
+          -no-color \
+          -lock-timeout=30s
+                
       - name: Comment Terraform Plan
         uses: actions/github-script@v7
         with:
