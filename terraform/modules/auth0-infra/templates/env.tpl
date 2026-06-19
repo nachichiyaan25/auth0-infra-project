@@ -12,7 +12,7 @@ AUTH0_MANAGEMENT_API_AUDIENCE=${auth0_management_api_audience}
 
 AUTH0_CALLBACK_URL=${alb_dns_name}/callback
 APP_BASE_URL=${alb_dns_name}
-ALLOWED_HOSTS=localhost,127.0.0.1,${alb_dns_name}
+ALLOWED_HOSTS=localhost,127.0.0.1,${alb_dns_name},${instance_private_ip}
 
 DEBUG=False
 DB_HOST=db

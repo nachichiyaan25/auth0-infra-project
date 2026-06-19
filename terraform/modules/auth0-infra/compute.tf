@@ -16,6 +16,7 @@ locals {
       auth0_management_api_audience  = var.auth0_management_api_audience
 
       alb_dns_name = aws_lb.a0i_alb.dns_name
+      instance_private_ip = aws_instance.a0i_instance_1.private_ip
     }
   )
 }
