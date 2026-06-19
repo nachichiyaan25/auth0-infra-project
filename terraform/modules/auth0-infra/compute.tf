@@ -65,9 +65,20 @@ resource "aws_instance" "a0i_instance_1" {
                 git clone https://github.com/nachichiyaan25/auth0-infra-project.git
                 fi
 
+                # Request instance private IP from IMDS(Instance Metadata Service)
+                
+                TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" \
+                -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+
+                PRIVATE_IP=$(curl -s \
+                -H "X-aws-ec2-metadata-token: $TOKEN" \
+                http://169.254.169.254/latest/meta-data/local-ipv4)
+
                 cat > /home/ubuntu/auth0-infra-project/.env <<'ENVFILE'
                 ${local.env_file}
                 ENVFILE
+
+                sed -i "s/^ALLOWED_HOSTS=.*/&,$PRIVATE_IP/" /home/ubuntu/auth0-infra-project/.env
 
                 chown -R ubuntu:ubuntu /home/ubuntu/auth0-infra-project
 
