@@ -1,12 +1,12 @@
 terraform {
   backend "s3" {
-    bucket = "auth0-infra-tf-state"
-    key    = "import-bootstrap/terraform.tfstate"
-    region = "ap-south-1"
+    bucket         = "auth0-infra-tf-state"
+    key            = "import-bootstrap/terraform.tfstate"
+    region         = "ap-south-1"
     dynamodb_table = "auth0-infra-state-locking"
-    encrypt = true
+    encrypt        = true
   }
-  
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -21,11 +21,11 @@ provider "aws" {
 
 
 resource "aws_s3_bucket" "a0i_state_bucket" {
-  bucket = "auth0-infra-tf-state"
+  bucket        = "auth0-infra-tf-state"
   force_destroy = true
 
   tags = {
-    Name        = "Auth0 Infra State Files Bucket"
+    Name = "Auth0 Infra State Files Bucket"
   }
 }
 
@@ -58,6 +58,6 @@ resource "aws_dynamodb_table" "a0i_state_lock_table" {
   }
 
   tags = {
-    Name        = "Auth0 Infra State Lock Table"
+    Name = "Auth0 Infra State Lock Table"
   }
 }

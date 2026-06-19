@@ -81,8 +81,8 @@ resource "aws_route_table_association" "subnet_2" {
 
 resource "aws_lb" "a0i_alb" {
 
-  name = "${var.project_name}-${var.environment}-alb"
-  internal = false
+  name               = "${var.project_name}-${var.environment}-alb"
+  internal           = false
   load_balancer_type = "application"
 
   security_groups = [
@@ -102,8 +102,8 @@ resource "aws_lb" "a0i_alb" {
 resource "aws_lb_listener" "a0i_http_listener" {
 
   load_balancer_arn = aws_lb.a0i_alb.arn
-  port = 80
-  protocol = "HTTP"
+  port              = 80
+  protocol          = "HTTP"
 
   default_action {
 
