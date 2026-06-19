@@ -44,3 +44,23 @@ jobs:
       - name: Terraform Apply
         working-directory: terraform/environments/dev
         run: terraform apply -input=false -auto-approve -lock-timeout=30s
+
+      - name: Deploy Latest Application
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/auth0-infra-project
+
+            git fetch origin
+            git checkout dev
+            git reset --hard origin/dev
+
+            docker compose down
+            docker compose up -d --build
+            docker compose ps
+            docker image prune -f
+            
+            curl --fail http://localhost:8000/health/
