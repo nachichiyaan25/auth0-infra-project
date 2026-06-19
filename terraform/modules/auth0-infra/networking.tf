@@ -125,7 +125,7 @@ resource "aws_lb_target_group" "a0i_tg" {
 
     enabled = true
 
-    path = "api/health/"
+    path = "/api/health/"
 
     port = "traffic-port"
 
