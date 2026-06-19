@@ -62,5 +62,22 @@ jobs:
             docker compose up -d --build
             docker compose ps
             docker image prune -f
-            
-            curl --fail http://localhost:8000/health/
+
+            echo "Waiting for application to become healthy..."
+
+            for i in {1..12}; do
+
+              if curl --silent --fail http://localhost:8000/api/health/; then
+                echo "Application is healthy."
+                exit 0
+              fi
+
+              echo "Application not ready yet... retrying in 5 seconds."
+
+              sleep 5
+
+            done
+
+            echo "Application failed health check."
+
+            exit 1
