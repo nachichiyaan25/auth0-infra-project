@@ -28,3 +28,12 @@ def admin_api(request):
         "status": "Authorized",
         "jwt_payload": request.jwt_payload
     })
+
+
+def health_check(request):
+
+    return JsonResponse(
+        {
+            "status": "healthy"
+        }
+    )
