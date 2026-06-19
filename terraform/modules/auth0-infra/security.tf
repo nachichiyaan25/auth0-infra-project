@@ -15,13 +15,12 @@ resource "aws_security_group" "a0i_instances_sg" {
 
   ingress {
 
-    description = "Allow traffic from anywhere on port 8000"
+    description = "Allow traffic only from ALB security group"
 
     from_port = 8000
     to_port   = 8000
     protocol  = "tcp"
-
-    cidr_blocks = ["0.0.0.0/0"]
+    security_groups =  [aws_security_group.a0i_alb_sg.id]
   }
 
   egress {

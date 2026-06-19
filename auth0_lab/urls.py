@@ -20,7 +20,7 @@ from django.urls import path, include
 
 from authentication.views import login, callback, logout
 from dashboard.views import dashboard
-from api.views import profile_api, admin_api
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,8 +33,7 @@ urlpatterns = [
 
     path('dashboard/', dashboard, name='dashboard'),
 
-    path('api/profile/', profile_api, name='profile_api'),
-    path('api/admin/', admin_api, name='admin_api'),
-
+    path('api/', include('api.urls')),
+    
     path('automation/', include('automation.urls')),
 ]
