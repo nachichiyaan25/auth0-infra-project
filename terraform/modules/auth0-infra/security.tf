@@ -17,10 +17,10 @@ resource "aws_security_group" "a0i_instances_sg" {
 
     description = "Allow traffic only from ALB security group"
 
-    from_port = 8000
-    to_port   = 8000
-    protocol  = "tcp"
-    security_groups =  [aws_security_group.a0i_alb_sg.id]
+    from_port       = 8000
+    to_port         = 8000
+    protocol        = "tcp"
+    security_groups = [aws_security_group.a0i_alb_sg.id]
   }
 
   egress {

@@ -3,19 +3,19 @@ locals {
   env_file = templatefile(
     "${path.module}/templates/env.tpl",
     {
-      secret_key                     = var.secret_key
+      secret_key = var.secret_key
 
-      auth0_client_id                = var.auth0_client_id
-      auth0_client_secret            = var.auth0_client_secret
-      
-      auth0_domain                   = var.auth0_domain
-      auth0_audience                 = var.auth0_audience
+      auth0_client_id     = var.auth0_client_id
+      auth0_client_secret = var.auth0_client_secret
 
-      auth0_m2m_client_id            = var.auth0_m2m_client_id
-      auth0_m2m_client_secret        = var.auth0_m2m_client_secret
-      auth0_management_api_audience  = var.auth0_management_api_audience
+      auth0_domain   = var.auth0_domain
+      auth0_audience = var.auth0_audience
 
-      alb_dns_name = aws_lb.a0i_alb.dns_name
+      auth0_m2m_client_id           = var.auth0_m2m_client_id
+      auth0_m2m_client_secret       = var.auth0_m2m_client_secret
+      auth0_management_api_audience = var.auth0_management_api_audience
+
+      alb_dns_name        = aws_lb.a0i_alb.dns_name
       instance_private_ip = aws_instance.a0i_instance_1.private_ip
     }
   )
@@ -23,16 +23,16 @@ locals {
 
 resource "aws_instance" "a0i_instance_1" {
 
-  ami                         = var.ami_id
-  instance_type               = var.instance_type
+  ami           = var.ami_id
+  instance_type = var.instance_type
 
-  subnet_id                   = aws_subnet.a0i_public_subnet_1.id
+  subnet_id = aws_subnet.a0i_public_subnet_1.id
 
   associate_public_ip_address = true
 
-  key_name                    = var.key_name
+  key_name = var.key_name
 
-  vpc_security_group_ids      = [aws_security_group.a0i_instances_sg.id]
+  vpc_security_group_ids = [aws_security_group.a0i_instances_sg.id]
 
   user_data = <<-EOF
                 #!/bin/bash
