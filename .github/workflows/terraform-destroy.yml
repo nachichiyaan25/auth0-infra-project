@@ -56,6 +56,10 @@ jobs:
           working-directory: terraform/environments/${{ github.event.inputs.environment }}
           run: terraform init
 
+        - name: Terraform Destroy Plan
+          working-directory: terraform/environments/${{ github.event.inputs.environment }}
+          run: terraform plan -destroy -input=false
+
         - name: Terraform Destroy
           working-directory: terraform/environments/${{ github.event.inputs.environment }}
           run: terraform destroy -auto-approve -input=false
