@@ -34,12 +34,12 @@ module "auth0_infra" {
   auth0_client_id     = var.auth0_client_id
   auth0_client_secret = var.auth0_client_secret
 
-  auth0_domain        = var.auth0_domain
-  auth0_audience      = var.auth0_audience
+  auth0_domain   = var.auth0_domain
+  auth0_audience = var.auth0_audience
 
   auth0_m2m_client_id     = var.auth0_m2m_client_id
   auth0_m2m_client_secret = var.auth0_m2m_client_secret
 
   auth0_management_api_audience = var.auth0_management_api_audience
-  github_actions_public_key = var.github_actions_public_key
+  github_actions_public_key     = var.github_actions_public_key
 }
