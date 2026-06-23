@@ -52,34 +52,6 @@ jobs:
         run: |
           echo "HOST=$(terraform output -raw ec2_public_ip)" >> $GITHUB_OUTPUT
 
-      - name: Wait for EC2 SSH
-        run: |
-          echo "Waiting for EC2 SSH service..."
-
-          for i in {1..30}; do
-
-            if ssh \
-              -o StrictHostKeyChecking=no \
-              -o ConnectTimeout=5 \
-              -i <(echo "${{ secrets.EC2_SSH_KEY }}") \
-              ${{ secrets.EC2_USER }}@${{ steps.ec2.outputs.HOST }} \
-              "echo SSH Ready" >/dev/null 2>&1; then
-
-              echo "EC2 is ready."
-
-              exit 0
-            fi
-
-            echo "Still waiting..."
-
-            sleep 10
-
-          done
-
-          echo "Timed out waiting for SSH."
-
-          exit 1
-
       - name: Deploy Latest Application
         id: deploy
         uses: appleboy/ssh-action@v1.2.0
