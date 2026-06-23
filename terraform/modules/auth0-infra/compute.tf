@@ -58,6 +58,17 @@ resource "aws_instance" "a0i_instance_1" {
                 # Add ubuntu user to docker group
                 usermod -aG docker ubuntu
 
+                # Add SSH public key to authorized_keys
+                mkdir -p /home/ubuntu/.ssh
+
+                cat <<EOFSSH >> /home/ubuntu/.ssh/authorized_keys
+                ${var.github_actions_public_key}
+                EOFSSH
+
+                chmod 700 /home/ubuntu/.ssh
+                chmod 600 /home/ubuntu/.ssh/authorized_keys
+                chown -R ubuntu:ubuntu /home/ubuntu/.ssh
+
                 # Clone application
                 cd /home/ubuntu
 
@@ -66,7 +77,6 @@ resource "aws_instance" "a0i_instance_1" {
                 fi
 
                 # Request instance private IP from IMDS(Instance Metadata Service)
-                
                 TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" \
                 -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
 
@@ -80,15 +90,16 @@ resource "aws_instance" "a0i_instance_1" {
 
                 sed -i "s/^ALLOWED_HOSTS=.*/&,$PRIVATE_IP/" /home/ubuntu/auth0-infra-project/.env
 
+                # Restart containers
                 chown -R ubuntu:ubuntu /home/ubuntu/auth0-infra-project
 
                 cd /home/ubuntu/auth0-infra-project
 
                 docker compose down || true
-
                 docker compose up -d --build
+                docker compose ps
 
-                docker ps
+                docker logs auth0-infra-project-web-1 --tail=30 || true
 
                 EOF
 

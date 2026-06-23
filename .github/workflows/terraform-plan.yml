@@ -12,7 +12,9 @@ permissions:
   issues: write
 
 jobs:
+
   terraform-plan:
+
     runs-on: ubuntu-latest
 
     environment: ${{ github.base_ref == 'main' && 'prod' || 'dev' }}
@@ -50,7 +52,7 @@ jobs:
             echo "path=terraform/environments/dev" >> $GITHUB_OUTPUT
           fi
 
-      - name: Terraform Format 
+      - name: Terraform Format Check
         working-directory: terraform
         run: terraform fmt -check -recursive
 
