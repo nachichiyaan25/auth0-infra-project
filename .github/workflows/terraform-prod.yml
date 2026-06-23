@@ -46,6 +46,11 @@ jobs:
         working-directory: terraform/environments/prod
         run: terraform apply -input=false -auto-approve -lock-timeout=30s
 
+      - name: Wait for Instance Bootstrap
+        run: |
+          echo "Waiting 45 seconds for cloud-init bootstrap..."
+          sleep 45
+
       - name: Get EC2 Public IP
         id: ec2
         working-directory: terraform/environments/prod
@@ -88,40 +93,4 @@ jobs:
 
             echo "Application failed health check."
 
-            exit 1
-
-      - name: Retry deployment once if SSH was not ready
-        if: steps.deploy.outcome == 'failure'
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ steps.ec2.outputs.HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            sleep 30
-
-            cd ~/auth0-infra-project
-
-            git fetch origin
-            git checkout main
-            git reset --hard origin/main
-
-            docker compose down
-            docker compose up -d --build
-            docker compose ps
-            docker image prune -f
-
-            echo "Waiting for application to become healthy..."
-
-            for i in {1..12}; do
-              if curl --silent --fail http://localhost:8000/api/health/; then
-                echo "Application is healthy."
-                exit 0
-              fi
-
-              echo "Application not ready yet... retrying in 5 seconds."
-              sleep 5
-            done
-
-            echo "Application failed health check."
             exit 1
