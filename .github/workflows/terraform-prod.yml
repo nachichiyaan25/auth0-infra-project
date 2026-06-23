@@ -26,6 +26,7 @@ jobs:
       TF_VAR_auth0_m2m_client_id: ${{ secrets.TF_VAR_AUTH0_M2M_CLIENT_ID }}
       TF_VAR_auth0_m2m_client_secret: ${{ secrets.TF_VAR_AUTH0_M2M_CLIENT_SECRET }}
       TF_VAR_auth0_management_api_audience: ${{ secrets.TF_VAR_AUTH0_MANAGEMENT_API_AUDIENCE }}
+      TF_VAR_github_actions_public_key: ${{ secrets.TF_VAR_GITHUB_ACTIONS_PUBLIC_KEY }}
 
     steps:
 
@@ -44,3 +45,46 @@ jobs:
       - name: Terraform Apply
         working-directory: terraform/environments/prod
         run: terraform apply -input=false -auto-approve -lock-timeout=30s
+
+      - name: Get EC2 Public IP
+        id: ec2
+        working-directory: terraform/environments/prod
+        run: |
+          echo "HOST=$(terraform output -raw ec2_public_ip)" >> $GITHUB_OUTPUT
+
+      - name: Deploy Latest Application
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ steps.ec2.outputs.HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/auth0-infra-project
+
+            git fetch origin
+            git checkout main
+            git reset --hard origin/main
+
+            docker compose down
+            docker compose up -d --build
+            docker compose ps
+            docker image prune -f
+
+            echo "Waiting for application to become healthy..."
+
+            for i in {1..12}; do
+
+              if curl --silent --fail http://localhost:8000/api/health/; then
+                echo "Application is healthy."
+                exit 0
+              fi
+
+              echo "Application not ready yet... retrying in 5 seconds."
+
+              sleep 5
+
+            done
+
+            echo "Application failed health check."
+
+            exit 1

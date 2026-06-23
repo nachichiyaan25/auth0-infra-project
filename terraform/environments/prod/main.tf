@@ -30,9 +30,7 @@ module "auth0_infra" {
   environment = local.environment
   key_name    = "auth0-infra-key"
 
-
-  secret_key = var.secret_key
-
+  secret_key          = var.secret_key
   auth0_client_id     = var.auth0_client_id
   auth0_client_secret = var.auth0_client_secret
 
@@ -43,5 +41,5 @@ module "auth0_infra" {
   auth0_m2m_client_secret = var.auth0_m2m_client_secret
 
   auth0_management_api_audience = var.auth0_management_api_audience
-
+  github_actions_public_key     = var.github_actions_public_key
 }

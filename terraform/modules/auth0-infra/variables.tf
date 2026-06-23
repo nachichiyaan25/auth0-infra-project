@@ -112,3 +112,11 @@ variable "auth0_management_api_audience" {
   type      = string
   sensitive = true
 }
+
+
+# Github actions Variables
+
+variable "github_actions_public_key" {
+  description = "GitHub Actions SSH Public Key"
+  type        = string
+}
