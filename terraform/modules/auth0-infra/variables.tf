@@ -96,6 +96,7 @@ variable "auth0_domain" {
 
 variable "auth0_audience" {
   type = string
+  sensitive = true
 }
 
 variable "auth0_m2m_client_id" {

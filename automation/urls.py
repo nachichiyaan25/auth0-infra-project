@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import test_management_token, list_users, list_roles, assign_role, create_user_view, search_user, update_metadata, block_user_view, change_user_role, delete_user_view, bulk_create_users, import_users_from_csv, debug_user_roles
+from .views import test_management_token, list_users, list_roles, assign_role, create_user_view, search_user, update_metadata, block_user_view, change_user_role, delete_user_view, bulk_create_users, import_users_from_csv
 
 
 urlpatterns = [
@@ -15,5 +15,4 @@ urlpatterns = [
     path('delete-user/', delete_user_view, name='delete_user'),
     path('bulk-create-users/', bulk_create_users, name='bulk_create_users'),
     path('import-users-csv/', import_users_from_csv, name='import_users_csv'),
-    path("debug-roles/", debug_user_roles),
 ]
