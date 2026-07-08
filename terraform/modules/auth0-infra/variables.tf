@@ -95,7 +95,7 @@ variable "auth0_domain" {
 }
 
 variable "auth0_audience" {
-  type = string
+  type      = string
   sensitive = true
 }
 
