@@ -432,13 +432,3 @@ def import_users_from_csv(request):
             "error": str(e)
         }, status=500)
     
-
-def debug_user_roles(request):
-
-    user_id = request.GET.get("user_id")
-
-    roles = get_user_roles(user_id)
-
-    return JsonResponse({
-        "roles_response": roles
-    })

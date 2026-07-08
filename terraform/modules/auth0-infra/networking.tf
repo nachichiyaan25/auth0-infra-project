@@ -122,22 +122,15 @@ resource "aws_lb_target_group" "a0i_tg" {
   vpc_id = aws_vpc.a0i_vpc.id
 
   health_check {
-
-    enabled = true
-
-    path = "/api/health/"
-
-    port = "traffic-port"
-
-    protocol = "HTTP"
-
+    enabled             = true
+    path                = "/api/health/"
+    port                = "traffic-port"
+    protocol            = "HTTP"
     healthy_threshold   = 3
     unhealthy_threshold = 5
-
-    timeout  = 5
-    interval = 30
-
-    matcher = "200"
+    timeout             = 5
+    interval            = 30
+    matcher             = "200"
   }
 
   tags = {

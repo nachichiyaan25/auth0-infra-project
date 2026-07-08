@@ -296,17 +296,22 @@ def get_user_roles(user_id):
 
     access_token = fetch_access_token()
 
+    url = (
+        f"https://{AUTH0_DOMAIN}"
+        f"/api/v2/users/{user_id}/roles"
+    )
+
     headers = {
         "Authorization": f"Bearer {access_token}"   
     }
 
     response = requests.get(
-    f"https://{AUTH0_DOMAIN}"
-    f"/api/v2/users/{user_id}/roles",
-    headers=headers
+        url,
+        headers=headers
     )   
 
     return response.json()
+
 
 def assign_default_role_if_missing(user_id):
 
