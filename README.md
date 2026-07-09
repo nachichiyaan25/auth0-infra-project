@@ -940,7 +940,7 @@ The roadmap reflects the planned engineering evolution of the platform as it pro
 
 Every future implementation will extend the existing platform architecture while preserving the engineering principles established throughout Mission Auth0 Infra.
 
----
+The project is designed to evolve continuously as new engineering capabilities are implemented, documented, and integrated into the platform.
 
 ## 💡 Engineering Learnings
 
