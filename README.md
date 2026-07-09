@@ -124,7 +124,7 @@ Mission Auth0 Infra is organized into independent engineering layers, each respo
 
 ### Overall Solution Architecture Diagram
 
-![Solution Architecture](Architecture_Diagram_AOI.png)
+![Solution Architecture](screenshots/dashboard.png)
 
 > **Note**
 >
@@ -198,7 +198,7 @@ The authentication architecture separates identity management from application l
 
 This approach closely reflects modern enterprise architectures where centralized identity providers secure multiple applications through standardized authentication protocols.
 
-### Engineering Objectives
+### Security Goals
 
 The authentication architecture was designed to achieve the following engineering objectives:
 
@@ -243,7 +243,7 @@ Rather than deploying the application directly onto a standalone virtual machine
 
 This layered infrastructure design closely resembles the foundational architecture used by modern cloud applications and provides a stable platform for future enhancements including Kubernetes orchestration, managed databases, autoscaling, TLS termination, and additional production services.
 
-### Engineering Objectives
+### Infrastructure Objectives
 
 The cloud infrastructure was designed to achieve the following engineering objectives:
 
@@ -518,11 +518,7 @@ What follows that merge is not a shortcut.
 
 It is the result of every engineering decision described throughout this project.
 
-> **Engineering is not measured by how many manual steps can be performed correctly. Engineering is measured by how many manual steps no longer need to exist.**
-
-Mission Auth0 Infra has gradually evolved around this engineering philosophy.
-
-Every implementation introduced throughout the platform has moved one step closer to reducing operational complexity through thoughtful architecture, repeatable automation, and continuous engineering evolution.
+> **Every implementation introduced throughout the platform has moved one step closer to reducing operational complexity through thoughtful architecture, repeatable automation, and continuous engineering evolution.**
 
 The platform did not begin with this level of automation.
 
@@ -692,7 +688,7 @@ The platform now required a method to describe, provision, version, and evolve c
 
 The next stage introduces Infrastructure as Code (IaC), where Terraform transforms the complete AWS infrastructure into reusable, version-controlled, and declarative engineering definitions.
 
-## Stage 4 — Infrastructure as Code
+### Stage 4 — Infrastructure as Code
 
 As deployment procedures became reproducible, the remaining engineering challenge shifted from application deployment to cloud infrastructure management.
 
@@ -868,14 +864,6 @@ Mission Auth0 Infra is organized to separate application development, infrastruc
 
 This organization enables each engineering capability to evolve independently while maintaining a clear relationship with the overall platform architecture.
 
-### Repository Philosophy
-
-The repository is organized around engineering responsibilities rather than individual technologies.
-
-Application source code, cloud infrastructure, deployment automation, documentation, and supporting assets are separated into dedicated domains, allowing each capability to evolve independently while remaining part of a unified engineering platform.
-
-This organization simplifies navigation, improves maintainability, encourages modular engineering practices, and establishes a reusable repository structure for future platform evolution.
-
 ### Engineering Domains
 
 | Repository Component | Engineering Responsibility                                                                     |
@@ -890,7 +878,6 @@ This organization simplifies navigation, improves maintainability, encourages mo
 | `sample_data/`       | Development datasets and testing resources                                                     |
 | `screenshots/`       | Documentation assets and project demonstrations                                                |
 | `README.md`          | Engineering overview and repository navigation                                                 |
-
 
 ### Repository Organization Principles
 
@@ -912,7 +899,6 @@ This organization simplifies navigation, encourages modular engineering practice
 | User Interface               | `dashboard/`         |
 | Platform Documentation       | `README.md`          |
 | Screenshots & Demonstrations | `screenshots/`       |
-
 
 The repository structure explains where each engineering capability is implemented.
 
@@ -954,7 +940,7 @@ The roadmap reflects the planned engineering evolution of the platform as it pro
 
 Every future implementation will extend the existing platform architecture while preserving the engineering principles established throughout Mission Auth0 Infra.
 
----
+The project is designed to evolve continuously as new engineering capabilities are implemented, documented, and integrated into the platform.
 
 ## 💡 Engineering Learnings
 
@@ -969,25 +955,11 @@ Throughout the project, several engineering principles consistently guided archi
 - Preserve architectural simplicity while increasing platform capabilities.
 - Document engineering decisions alongside implementation details to support future evolution.
 
-Every implementation throughout this project contributes to a platform that becomes increasingly automated, maintainable, reusable, and extensible over time.
+Every implementation throughout this repository contributes to a platform that becomes increasingly automated, maintainable, reusable, and extensible over time.
 
 > **Engineering is not measured by how many manual steps can be performed correctly. Engineering is measured by how many manual steps no longer need to exist.**
 
-Mission Auth0 Infra is built upon this engineering philosophy and will continue evolving accordingly.
+Mission Auth0 Infra is built upon this engineering philosophy and will continue evolving according to these principles.
 
 ---
 
-## 👨‍💻 Author
-
-**S M Nachiketha**
-
-Platform Engineer | DevOps Engineer | Identity & Access Management
-
-Mission Auth0 Infra represents a continuous engineering initiative focused on Platform Engineering, Infrastructure as Code, Cloud Automation, Identity & Access Management, and modern DevOps practices.
-
-The project is designed to evolve continuously as new engineering capabilities are implemented, documented, and integrated into the platform.
-
-- GitHub: https://github.com/nachichiyaan25
-- LinkedIn: https://www.linkedin.com/in/s-m-nachiketha-4b8878196/
-
----
