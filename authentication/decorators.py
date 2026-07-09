@@ -24,7 +24,7 @@ def requires_permission(permission_name):
                     }, status=403)
 
                 # Browser User
-                return render(request, "forbidden.html", {
+                return render(request, "admin/forbidden.html", {
                     "required_permission": permission_name    
                 }, status=403)
 

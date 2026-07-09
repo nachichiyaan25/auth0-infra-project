@@ -33,7 +33,7 @@ def admin_dashboard(request):
         })
 
     # Browser Users
-    return render(request, "admin.html", {    
+    return render(request, "admin/admin.html", {    
         "user": request.session.get("user"),
         "permissions": request.jwt_payload.get("permissions", []),
         "jwt_payload": request.jwt_payload
