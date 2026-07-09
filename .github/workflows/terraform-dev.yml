@@ -46,17 +46,33 @@ jobs:
         working-directory: terraform/environments/dev
         run: terraform apply -input=false -auto-approve -lock-timeout=30s
 
-      - name: Get EC2 Public IP
-        id: ec2
+      - name: Get Terraform Outputs
+        id: terraform
         working-directory: terraform/environments/dev
         run: |
           echo "HOST=$(terraform output -raw ec2_public_ip)" >> $GITHUB_OUTPUT
+          echo "INSTANCE_ID=$(terraform output -raw ec2_instance_id)" >> $GITHUB_OUTPUT
+
+      - name: Wait for EC2 Status Checks
+        run: |
+
+          echo "======================================="
+          echo "Waiting for EC2 instance status checks..."
+          echo "======================================="
+
+          aws ec2 wait instance-status-ok \
+            --instance-ids ${{ steps.terraform.outputs.INSTANCE_ID }} \
+            --region ${{ env.AWS_DEFAULT_REGION }}
+
+          echo "======================================="
+          echo "EC2 passed both AWS status checks."
+          echo "======================================="
 
       - name: Wait for SSH Port
         run: |
           echo "Waiting for SSH service..."
 
-          until nc -z ${{ steps.ec2.outputs.HOST }} 22; do
+          until nc -z ${{ steps.terraform.outputs.HOST }} 22; do
             echo "SSH not ready yet..."
             sleep 5
           done
@@ -66,7 +82,7 @@ jobs:
       - name: Wait for Cloud Initialization
         uses: appleboy/ssh-action@v1.2.0
         with:
-          host: ${{ steps.ec2.outputs.HOST }}
+          host: ${{ steps.terraform.outputs.HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           
@@ -83,16 +99,16 @@ jobs:
             echo "Cloud initialization completed."
             echo "======================================="
 
-            docker --version
-            docker compose --version
-            git --version
+            echo "docker --version"
+            echo "docker compose --version"
+            echo "git --version"
 
             echo "Instance is ready for deployment."
 
       - name: Deploy Latest Platform Version
         uses: appleboy/ssh-action@v1.2.0
         with:
-          host: ${{ steps.ec2.outputs.HOST }}
+          host: ${{ steps.terraform.outputs.HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |

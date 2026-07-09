@@ -124,7 +124,7 @@ Mission Auth0 Infra is organized into independent engineering layers, each respo
 
 ### Overall Solution Architecture Diagram
 
-![Solution Architecture](Architecture_Diagram_AOI.png)
+![Solution Architecture](Screenshots/General/Architecture_Diagram_AOI.png)
 
 > **Note**
 >
@@ -692,7 +692,7 @@ The platform now required a method to describe, provision, version, and evolve c
 
 The next stage introduces Infrastructure as Code (IaC), where Terraform transforms the complete AWS infrastructure into reusable, version-controlled, and declarative engineering definitions.
 
-## Stage 4 — Infrastructure as Code
+### Stage 4 — Infrastructure as Code
 
 As deployment procedures became reproducible, the remaining engineering challenge shifted from application deployment to cloud infrastructure management.
 
