@@ -52,6 +52,17 @@ jobs:
         run: |
           echo "HOST=$(terraform output -raw ec2_public_ip)" >> $GITHUB_OUTPUT
 
+      - name: Wait for SSH Port
+        run: |
+          echo "Waiting for SSH service..."
+
+          until nc -z ${{ steps.ec2.outputs.HOST }} 22; do
+            echo "SSH not ready yet..."
+            sleep 5
+          done
+
+          echo "SSH is accepting connections."
+
       - name: Wait for Cloud Initialization
         uses: appleboy/ssh-action@v1.2.0
         with:
@@ -73,7 +84,7 @@ jobs:
             echo "======================================="
 
             docker --version
-            docker compose version
+            docker compose --version
             git --version
 
             echo "Instance is ready for deployment."
