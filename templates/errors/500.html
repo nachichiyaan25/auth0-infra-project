@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Forbidden
+Internal Server Error
 {% endblock %}
 
 {% block content %}
@@ -9,15 +9,15 @@ Forbidden
 <div class="page-header">
 
     <h1 class="page-title">
-        Forbidden
+        Internal Server Error
     </h1>
 
     <p class="page-subtitle">
-        The requested resource exists, but your current identity is not authorized to access it.
+        The platform encountered an unexpected error while processing your request.
     </p>
 
     <span class="badge badge-error">
-        Authorization Failed
+        HTTP 500
     </span>
 
 </div>
@@ -25,24 +25,20 @@ Forbidden
 <div class="card">
 
     <h2 class="section-title">
-        Authorization Required
+
+        What happened?
+
     </h2>
 
     <p>
 
-        Authentication verifies who you are.
+        An unexpected platform exception occurred while serving this request.
 
     </p>
 
     <p>
 
-        Authorization determines what you are allowed to do.
-
-    </p>
-
-    <p>
-
-        Your current identity does not possess the permissions required to access this resource.
+        The issue has been isolated to the application layer and can typically be diagnosed through platform logs and monitoring.
 
     </p>
 
@@ -66,7 +62,7 @@ Forbidden
 
 <div class="footer">
 
-    RBAC • Authorization • Auth0
+    Mission Auth0 Infra
 
 </div>
 
