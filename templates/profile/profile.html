@@ -1,0 +1,425 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Identity Profile
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1 class="page-title">
+        Identity Profile
+    </h1>
+
+    <p class="page-subtitle">
+        View identity attributes returned by Auth0 after successful OAuth2 /
+        OpenID Connect authentication.
+    </p>
+
+    <span class="badge badge-success">
+        Identity Session Active
+    </span>
+
+</div>
+
+
+
+<div class="card">
+
+    <div class="profile">
+
+        <img
+            src="{{ user.picture }}"
+            alt="Profile Picture">
+
+        <div class="profile-details">
+
+            <h2>{{ user.name }}</h2>
+
+            <p>{{ user.email }}</p>
+
+            <p>
+                Identity verified through Auth0 Universal Login
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="card">
+
+    <h2 class="section-title">
+
+        Identity Information
+
+    </h2>
+
+    <div class="grid">
+
+        <div class="info-box">
+            <h3>Display Name</h3>
+            <p>{{ user.name }}</p>
+        </div>
+
+        <div class="info-box">
+            <h3>Email Address</h3>
+            <p>{{ user.email }}</p>
+        </div>
+
+        <div class="info-box">
+            <h3>Email Verified</h3>
+            <p>{{ user.email_verified }}</p>
+        </div>
+
+        <div class="info-box">
+            <h3>Nickname</h3>
+            <p>{{ user.nickname }}</p>
+        </div>
+
+        <div class="info-box">
+            <h3>Subject Identifier</h3>
+            <p>{{ user.sub }}</p>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="card">
+
+    <h2 class="section-title">
+
+        Authentication Details
+
+    </h2>
+
+    <div class="grid">
+
+        <div class="info-box">
+
+            <h3>
+
+                Identity Provider
+
+            </h3>
+
+            <p>
+
+                Google OAuth2
+
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+
+                Identity Broker
+
+            </h3>
+
+            <p>
+
+                Auth0 Universal Login
+
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+
+                Authentication Flow
+
+            </h3>
+
+            <p>
+
+                OAuth2 Authorization Code Flow
+
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+
+                Protocol
+
+            </h3>
+
+            <p>
+
+                OpenID Connect (OIDC)
+
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+
+                Authentication Status
+
+            </h3>
+
+            <span class="badge badge-success">
+
+                Verified
+
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="card">
+
+    <h2 class="section-title">
+
+        Granted OAuth Scopes
+
+    </h2>
+
+    <p>
+
+        During authentication, the platform requested permission to access only
+        the identity information required to create your authenticated session.
+
+    </p>
+
+    <div class="grid">
+
+        <div class="info-box">
+
+            <h3>
+
+                openid
+
+            </h3>
+
+            <p>
+
+                Enables OpenID Connect authentication.
+
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+
+                profile
+
+            </h3>
+
+            <p>
+
+                Access to basic profile information.
+
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+
+                email
+
+            </h3>
+
+            <p>
+
+                Access to verified email address.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="card">
+
+    <h2 class="section-title">
+
+        User Consent
+
+    </h2>
+
+    <p>
+
+        By signing in through your Identity Provider, you granted consent for
+        Mission Auth0 Infra to receive the identity attributes requested through
+        the approved OAuth2/OpenID Connect scopes.
+
+    </p>
+
+    <p>
+
+        Your password is never shared with this application. Authentication is
+        performed securely by Auth0 and your Identity Provider.
+
+    </p>
+
+</div>
+
+
+
+<div class="card">
+
+    <h2 class="section-title">
+
+        Session Information
+
+    </h2>
+
+    <div class="grid">
+
+        <div class="info-box">
+
+            <h3>
+
+                Session Storage
+
+            </h3>
+
+            <p>
+
+                Django Server Session
+
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+
+                Identity Provider
+
+            </h3>
+
+            <p>
+
+                Auth0
+
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+
+                Session Status
+
+            </h3>
+
+            <span class="badge badge-success">
+
+                Active
+
+            </span>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+
+                Granted Permissions
+
+            </h3>
+
+            <p>
+
+                {{ permissions }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="card">
+
+    <h2 class="section-title">
+
+        Platform Actions
+
+    </h2>
+
+    <div class="button-group">
+
+        <a
+            class="button"
+            href="/dashboard/">
+
+            Dashboard
+
+        </a>
+
+        <a
+            class="button"
+            href="/api/admin/">
+
+            Admin Portal
+
+        </a>
+
+        <a
+            class="button"
+            href="/logout/">
+
+            Logout
+
+        </a>
+
+    </div>
+
+</div>
+
+
+
+<div class="footer">
+
+    <p>
+
+        Mission Auth0 Infra
+
+    </p>
+
+    <p>
+
+        Identity Engineering • OAuth2 • OpenID Connect • Auth0 • Django
+
+    </p>
+
+</div>
+
+{% endblock %}

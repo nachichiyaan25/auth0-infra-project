@@ -7,17 +7,37 @@ from authentication.authentication import requires_auth
 
 def profile_api(request):
 
-    user = request.session.get('user')
+    # API clients (Postman, curl, etc.)
+    if request.headers.get("Authorization"):
+
+        return JsonResponse({
+            "message": "Protected Profile API Success",
+            "user": request.jwt_payload
+        })
+
+    user = request.session.get("user")
 
     if not user:
-        return JsonResponse({
-            "error": "Unauthorized"
-        }, status=401)
 
-    return JsonResponse({
-        "message": "Protected API Success",
-        "user": user
-    })
+        return render(
+            request,
+            "errors/401.html",
+            status=401
+        )
+
+    permissions = request.session.get(
+        "permissions",
+        []
+    )
+
+    return render(
+        request,
+        "profile/profile.html",
+        {
+            "user": user,
+            "permissions": permissions
+        }
+    )
 
 @requires_auth
 @requires_permission("admin:all")
