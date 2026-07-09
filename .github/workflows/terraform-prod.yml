@@ -9,9 +9,9 @@ jobs:
 
   deploy-prod:
 
-    environment: prod
-
     runs-on: ubuntu-latest
+
+    environment: prod
 
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -46,25 +46,59 @@ jobs:
         working-directory: terraform/environments/prod
         run: terraform apply -input=false -auto-approve -lock-timeout=30s
 
-      - name: Wait for Instance Bootstrap
-        run: |
-          echo "Waiting 45 seconds for cloud-init bootstrap..."
-          sleep 45
-
       - name: Get EC2 Public IP
         id: ec2
         working-directory: terraform/environments/prod
         run: |
           echo "HOST=$(terraform output -raw ec2_public_ip)" >> $GITHUB_OUTPUT
 
-      - name: Deploy Latest Application
-        id: deploy
+      - name: Wait for SSH Port
+        run: |
+          echo "Waiting for SSH service..."
+
+          until nc -z ${{ steps.ec2.outputs.HOST }} 22; do
+            echo "SSH not ready yet..."
+            sleep 5
+          done
+
+      - name: Wait for Cloud Initialization
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ steps.ec2.outputs.HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          
+          command_timeout: 20m
+          script: |
+
+            echo "======================================="
+            echo "Waiting for cloud-init to finish..."
+            echo "======================================="
+
+            sudo cloud-init status --wait
+
+            echo "======================================="
+            echo "Cloud initialization completed."
+            echo "======================================="
+
+            docker --version
+            docker compose --version
+            git --version
+
+            echo "Instance is ready for deployment."
+
+      - name: Deploy Latest Platform Version
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ steps.ec2.outputs.HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+
+            echo "======================================="
+            echo "Deploying latest application..."
+            echo "======================================="
+
             cd ~/auth0-infra-project
 
             git fetch origin
@@ -76,21 +110,35 @@ jobs:
             docker compose ps
             docker image prune -f
 
-            echo "Waiting for application to become healthy..."
+            echo ""
+            echo "Waiting for Django health endpoint..."
+            echo ""
 
             for i in {1..12}; do
 
-              if curl --silent --fail http://localhost:8000/api/health/; then
-                echo "Application is healthy."
+              if curl --silent --fail http://localhost:8000/api/health/ > /dev/null; then
+
+                echo "======================================="
+                echo "Health check passed."
+                echo "Application deployment successful."
+                echo "======================================="
+
                 exit 0
               fi
 
-              echo "Application not ready yet... retrying in 5 seconds."
+              echo "Attempt $i/12 : Application not ready. Retrying in 5 seconds..."
 
               sleep 5
 
             done
 
-            echo "Application failed health check."
+            echo "======================================="
+            echo "Health check failed."
+            echo "Application failed to become healthy."
+            echo "======================================="
+
+            docker compose ps
+            docker compose logs --tail=100
 
             exit 1
+
