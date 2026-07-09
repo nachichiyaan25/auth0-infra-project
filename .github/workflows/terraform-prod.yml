@@ -97,10 +97,6 @@ jobs:
             echo "Cloud initialization completed."
             echo "======================================="
 
-            echo "docker --version"
-            echo "docker compose --version"
-            echo "git --version"
-
             echo "Instance is ready for deployment."
 
       - name: Deploy Latest Platform Version

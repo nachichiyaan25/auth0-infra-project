@@ -35,7 +35,6 @@ def callback(request):
 
     # Decode access token WITHOUT signature verification
     # ONLY for learning/debugging purpose
-
     decoded_access_token = jwt.decode(
         access_token,
         options={"verify_signature": False}
