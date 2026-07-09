@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from authentication.decorators import requires_permission
 from authentication.authentication import requires_auth
+import jwt
 
 # Create your views here.
 
@@ -53,10 +54,23 @@ def admin_dashboard(request):
         })
 
     # Browser Users
+    id_token = request.session.get("id_token")
+
+    decoded_id_token = jwt.decode(
+        id_token,
+        options={"verify_signature": False}
+    )
+
+    roles = decoded_id_token.get(
+        "https://auth0-infra/roles",
+        []
+    )
+
     return render(request, "admin/admin.html", {    
         "user": request.session.get("user"),
         "permissions": request.jwt_payload.get("permissions", []),
-        "jwt_payload": request.jwt_payload
+        "jwt_payload": request.jwt_payload,
+        "roles": roles
     })
 
 
