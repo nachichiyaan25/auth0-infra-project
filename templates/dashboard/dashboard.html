@@ -1,0 +1,316 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Mission Auth0 Infra
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1 class="page-title">
+        Mission Auth0 Infra 🚀
+    </h1>
+
+    <p class="page-subtitle">
+        Cloud-Native IAM Automation Platform
+    </p>
+
+    <p class="page-subtitle">
+        Authenticated using Auth0 OAuth2 / OpenID Connect
+    </p>
+
+    <span class="badge badge-success">
+        Authentication Successful
+    </span>
+
+</div>
+
+
+
+<div class="card">
+
+    <div class="profile">
+
+        <img
+            src="{{ user.picture }}"
+            alt="Profile Picture">
+
+        <div class="profile-details">
+
+            <h2>
+                {{ user.name }}
+            </h2>
+
+            <p>
+
+                {{ user.email }}
+
+            </p>
+
+            <p>
+
+                Identity verified through
+                Auth0 Universal Login
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="card">
+
+    <h2 class="section-title">
+
+        Identity & Access Claims
+
+    </h2>
+
+    <div class="grid">
+
+        <div class="info-box">
+
+            <h3>
+
+                Authentication
+
+            </h3>
+
+            <span class="badge badge-success">
+
+                Authenticated
+
+            </span>
+
+        </div>
+
+
+
+        <div class="info-box">
+
+            <h3>
+
+                Roles
+
+            </h3>
+
+            <p>
+
+                {{ roles }}
+
+            </p>
+
+        </div>
+
+
+
+        <div class="info-box">
+
+            <h3>
+
+                Permissions
+
+            </h3>
+
+            <p>
+
+                {{ permissions }}
+
+            </p>
+
+        </div>
+
+
+
+        <div class="info-box">
+
+            <h3>
+
+                Department
+
+            </h3>
+
+            <p>
+
+                {{ department }}
+
+            </p>
+
+        </div>
+
+
+
+        <div class="info-box">
+
+            <h3>
+
+                Identity Provider
+
+            </h3>
+
+            <p>
+
+                {{ connection }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="card">
+
+    <h2 class="section-title">
+
+        Platform Capabilities
+
+    </h2>
+
+    <div class="grid">
+
+        <div class="info-box">
+
+            <h3>
+
+                Identity Provider
+
+            </h3>
+
+            <p>
+
+                Auth0 OAuth2 / OIDC
+
+            </p>
+
+        </div>
+
+
+
+        <div class="info-box">
+
+            <h3>
+
+                Runtime Platform
+
+            </h3>
+
+            <p>
+
+                Docker Containers
+
+            </p>
+
+        </div>
+
+
+
+        <div class="info-box">
+
+            <h3>
+
+                Infrastructure
+
+            </h3>
+
+            <p>
+
+                Terraform + AWS
+
+            </p>
+
+        </div>
+
+
+
+        <div class="info-box">
+
+            <h3>
+
+                CI / CD
+
+            </h3>
+
+            <p>
+
+                GitHub Actions
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="card">
+
+    <h2 class="section-title">
+
+        Platform Actions
+
+    </h2>
+
+    <div class="button-group">
+
+        <a
+            class="button"
+            href="/api/profile/">
+
+            Profile API
+
+        </a>
+
+
+
+        <a
+            class="button"
+            href="/api/admin/">
+
+            Admin Portal
+
+        </a>
+
+
+
+        <a
+            class="button"
+            href="/logout/">
+
+            Logout
+
+        </a>
+
+    </div>
+
+</div>
+
+
+
+<div class="footer">
+
+    <p>
+
+        Mission Auth0 Infra
+
+    </p>
+
+    <p>
+
+        Django • Auth0 • PostgreSQL • Docker • Terraform • GitHub Actions • AWS
+
+    </p>
+
+</div>
+
+{% endblock %}

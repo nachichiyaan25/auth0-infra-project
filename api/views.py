@@ -20,12 +20,22 @@ def profile_api(request):
     })
 
 @requires_auth
-@requires_permission('admin:all')
-def admin_api(request):
+@requires_permission("admin:all")
+def admin_dashboard(request):
 
-    return JsonResponse({
-        "message": "Welcome Admin!",
-        "status": "Authorized",
+    # API Clients (Postman, curl, external integrations)
+    if request.headers.get("Authorization"):
+
+        return JsonResponse({
+            "message": "Welcome Admin!",
+            "status": "Authorized",
+            "jwt_payload": request.jwt_payload
+        })
+
+    # Browser Users
+    return render(request, "admin.html", {    
+        "user": request.session.get("user"),
+        "permissions": request.jwt_payload.get("permissions", []),
         "jwt_payload": request.jwt_payload
     })
 

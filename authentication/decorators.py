@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.shortcuts import redirect
+from django.shortcuts import render
 
 
 def requires_permission(permission_name):
@@ -9,15 +9,23 @@ def requires_permission(permission_name):
         def wrapper(request, *args, **kwargs):
 
             permissions = request.jwt_payload.get(
-                'permissions', 
+                "permissions",
                 []
             )
 
             if permission_name not in permissions:
 
-                return JsonResponse({
-                    "error": "Forbidden",
-                    "message": f"Missing permission: {permission_name}"
+                # API Client (Postman, curl, external integrations)
+                if request.headers.get("Authorization"):
+
+                    return JsonResponse({
+                        "error": "Forbidden",
+                        "message": f"Missing permission: {permission_name}"
+                    }, status=403)
+
+                # Browser User
+                return render(request, "forbidden.html", {
+                    "required_permission": permission_name    
                 }, status=403)
 
             return view_func(request, *args, **kwargs)

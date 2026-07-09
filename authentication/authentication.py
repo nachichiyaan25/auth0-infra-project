@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+
 from .token_validation import validate_jwt
 
 
@@ -6,17 +7,34 @@ def requires_auth(view_func):
 
     def wrapper(request, *args, **kwargs):
 
+        token = None
+
+        # API Clients (Postman, curl, external applications)
         auth_header = request.headers.get("Authorization")
 
-        if not auth_header:
+        if auth_header:
 
-            return JsonResponse({
-                "error": "Authorization header missing"
-            }, status=401)
+            try:
+                token = auth_header.split()[1]
+
+            except IndexError:
+
+                return JsonResponse({
+                    "error": "Invalid Authorization header format"
+                }, status=401)
+
+        # Browser Users (Django Session)
+        else:
+
+            token = request.session.get("access_token")
+
+            if not token:
+
+                return JsonResponse({
+                    "error": "Authentication required"
+                }, status=401)
 
         try:
-
-            token = auth_header.split()[1]
 
             payload = validate_jwt(token)
 

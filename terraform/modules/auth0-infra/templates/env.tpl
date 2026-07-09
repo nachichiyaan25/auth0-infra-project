@@ -10,8 +10,8 @@ AUTH0_M2M_CLIENT_ID=${auth0_m2m_client_id}
 AUTH0_M2M_CLIENT_SECRET=${auth0_m2m_client_secret}
 AUTH0_MANAGEMENT_API_AUDIENCE=${auth0_management_api_audience}
 
-AUTH0_CALLBACK_URL=${alb_dns_name}/callback
-APP_BASE_URL=${alb_dns_name}
+AUTH0_CALLBACK_URL=http://${alb_dns_name}/callback/
+APP_BASE_URL=http://${alb_dns_name}
 ALLOWED_HOSTS=localhost,127.0.0.1,${alb_dns_name}
 
 DEBUG=False

@@ -836,7 +836,7 @@ The platform had successfully automated deployment.
 
 The next evolution will be focused on automating platform operations.
 
-> **Application deployment had become automated. Platform operations had not.**
+> **Application deployment has become automated. Platform operations is not.**
 
 The next stage transforms Mission Auth0 Infra from an automated deployment platform into a continuously evolving Platform Engineering ecosystem capable of supporting Kubernetes, GitOps, observability, autoscaling, and production-scale operational practices.
 
