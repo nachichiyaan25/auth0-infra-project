@@ -41,7 +41,7 @@ resource "aws_instance" "a0i_instance_1" {
                 # Update packages
                 apt-get update -y
 
-                # Install Docker
+                # Install and Enable Docker
                 apt-get install -y docker.io git curl
 
                 systemctl enable docker
@@ -84,22 +84,15 @@ resource "aws_instance" "a0i_instance_1" {
                 -H "X-aws-ec2-metadata-token: $TOKEN" \
                 http://169.254.169.254/latest/meta-data/local-ipv4)
 
+                # Create .env file with environment variables
                 cat > /home/ubuntu/auth0-infra-project/.env <<'ENVFILE'
                 ${local.env_file}
                 ENVFILE
 
+                # Append private IP to ALLOWED_HOSTS
                 sed -i "s/^ALLOWED_HOSTS=.*/&,$PRIVATE_IP/" /home/ubuntu/auth0-infra-project/.env
 
-                # Restart containers
                 chown -R ubuntu:ubuntu /home/ubuntu/auth0-infra-project
-
-                cd /home/ubuntu/auth0-infra-project
-
-                docker compose down || true
-                docker compose up -d --build
-                docker compose ps
-
-                docker logs auth0-infra-project-web-1 --tail=30 || true
 
                 EOF
 
