@@ -1,0 +1,363 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Access Denied
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1 class="page-title">
+
+        Admin Access Denied
+
+    </h1>
+
+    <p class="page-subtitle">
+
+        Authentication succeeded, but you don't have the required authorization to access this resource.
+
+    </p>
+
+    <span class="badge badge-error">
+
+        <h3>
+            
+            Authorization Failed
+
+        </h3>
+
+    </span>
+
+</div>
+
+
+
+<div class="card">
+
+    <div class="profile">
+
+        <img
+            src="{{ user.picture }}"
+            alt="Profile Picture">
+
+        <div class="profile-details">
+
+            <h2>
+
+                {{ user.name }}
+
+            </h2>
+
+            <p>
+
+                {{ user.email }}
+
+            </p>
+
+            <p>
+
+                Your identity has been verified successfully.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="card">
+
+    <h2 class="section-title">
+
+        Authorization Summary
+
+    </h2>
+
+    <div class="grid">
+
+        <div class="info-box">
+
+            <h3>
+
+                Authentication
+
+            </h3>
+
+            <span class="badge badge-success">
+
+                Verified
+
+            </span>
+
+        </div>
+
+
+
+        <div class="info-box">
+
+            <h3>
+
+                Authorization
+
+            </h3>
+
+            <span class="badge badge-error">
+
+                Failed
+
+            </span>
+
+        </div>
+
+
+
+        <div class="info-box">
+
+            <h3>
+
+                Granted Permissions
+
+            </h3>
+
+            <p>
+
+                {{ permissions }}
+
+            </p>
+
+        </div>
+
+
+
+        <div class="info-box">
+
+            <h3>
+
+                Required Permission
+
+            </h3>
+
+            <p>
+
+                {{ required_permission }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="card">
+
+    <h2 class="section-title">
+
+        Why was access denied?
+
+    </h2>
+
+    <p>
+
+       Administrative resources are protected using Role-Based Access Control (RBAC).
+
+    </p>
+
+    <p>
+
+        Your JWT Access Token was successfully validated and your identity
+        was authenticated.
+
+    </p>
+
+    <p>
+
+        However, your token does not contain the required
+        <strong>admin:all</strong> permission needed to access this resource.
+
+    </p>
+
+</div>
+
+
+
+<div class="card">
+
+    <h2 class="section-title">
+
+        Current Identity Permissions
+
+    </h2>
+
+    <div class="grid">
+
+        <div class="info-box">
+
+            <h3>
+
+                Current Roles
+
+            </h3>
+
+            <p>
+
+                {{ roles }}
+
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+
+                Role Permissions
+
+            </h3>
+
+            <p>
+
+                {{ permissions }}
+
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+
+                Identity Provider
+
+            </h3>
+
+            <p>
+
+                {{ connection }}
+
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+
+                Authorization Engine
+
+            </h3>
+
+            <p>
+
+                Auth0 RBAC
+
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+
+                JWT Validation
+
+            </h3>
+
+            <p>
+
+                Successful
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="card">
+
+    <h2 class="section-title">
+
+        What can you do next?
+
+    </h2>
+
+    <p>
+
+        If you believe this access is required for your responsibilities,
+        contact your platform administrator to request assignment of the
+        appropriate role or permission.
+
+    </p>
+
+</div>
+
+
+
+<div class="card">
+
+    <h2 class="section-title">
+
+        Platform Actions
+
+    </h2>
+
+    <div class="button-group">
+
+        <a
+            class="button"
+            href="/dashboard/">
+
+            Dashboard
+
+        </a>
+
+        <a
+            class="button"
+            href="/api/profile/">
+
+            Identity Profile
+
+        </a>
+
+        <a
+            class="button"
+            href="/logout/">
+
+            Logout
+
+        </a>
+
+    </div>
+
+</div>
+
+
+
+<div class="footer">
+
+    <p>
+
+        Mission Auth0 Infra
+
+    </p>
+
+    <p>
+
+        Authentication Verified • Authorization Required • RBAC Protected
+
+    </p>
+
+</div>
+
+{% endblock %}

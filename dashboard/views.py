@@ -39,7 +39,7 @@ def dashboard(request):
         'Unknown'
     )
 
-    return render(request, 'dashboard.html', {
+    return render(request, 'dashboard/dashboard.html', {
         'user': user,
         'roles': roles,
         'department': department,

@@ -1,0 +1,398 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Administrator Console
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1 class="page-title">
+        Administrator Console
+    </h1>
+
+    <p class="page-subtitle">
+
+        Role-Based Access Control verification completed successfully.
+
+    </p>
+
+    <span class="badge badge-success">
+
+        Administrator Access Granted
+
+    </span>
+
+</div>
+
+
+
+<div class="card">
+
+    <div class="profile">
+
+        <img
+            src="{{ user.picture }}"
+            alt="Profile Picture">
+
+        <div class="profile-details">
+
+            <h2>
+
+                {{ user.name }}
+
+            </h2>
+
+            <p>
+
+                {{ user.email }}
+
+            </p>
+
+            <p>
+
+                Privileged access verified through Role-Based Access Control.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="card">
+
+    <h2 class="section-title">
+
+        Authorization Summary
+
+    </h2>
+
+    <div class="grid">
+
+        <div class="info-box">
+
+            <h3>
+
+                Authentication
+
+            </h3>
+
+            <span class="badge badge-success">
+
+                Verified
+
+            </span>
+
+        </div>
+
+
+
+        <div class="info-box">
+
+            <h3>
+
+                Authorization
+
+            </h3>
+
+            <span class="badge badge-success">
+
+                Granted
+
+            </span>
+
+        </div>
+
+
+
+        <div class="info-box">
+
+            <h3>
+
+                Active Role
+
+            </h3>
+
+            <p>
+
+                {{ roles }}
+
+            </p>
+
+        </div>
+
+
+
+        <div class="info-box">
+
+            <h3>
+
+                Required Permission
+
+            </h3>
+
+            <p>
+
+                "admin:all"
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="card">
+
+    <h2 class="section-title">
+
+        Granted Administrative Permissions
+
+    </h2>
+
+    <div class="grid">
+
+        <div class="info-box">
+
+            <h3>
+
+                Granted Permissions
+
+            </h3>
+
+            <p>
+
+                {{ permissions }}
+
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+
+                Authorization Engine
+
+            </h3>
+
+            <p>
+
+                Auth0 RBAC
+
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+
+                Validation Source
+
+            </h3>
+
+            <p>
+
+                JWT Access Token
+
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+
+                Token Validation
+
+            </h3>
+
+            <p>
+
+                JWKS Signature Verification
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="card">
+
+    <h2 class="section-title">
+
+        Administrative Capabilities
+
+    </h2>
+
+    <div class="grid">
+
+        <div class="info-box">
+
+            <h3>
+
+                Identity Management
+
+            </h3>
+
+            <p>
+
+                Authorized
+
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+
+                Platform Automation
+
+            </h3>
+
+            <p>
+
+                Authorized
+
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+
+                Infrastructure Operations
+
+            </h3>
+
+            <p>
+
+                Authorized
+
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+
+                Administrative APIs
+
+            </h3>
+
+            <p>
+
+                Accessible
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="card">
+
+    <h2 class="section-title">
+
+        Why was access granted?
+
+    </h2>
+
+    <p>
+
+        This portal is protected using Role-Based Access Control (RBAC).
+        Your validated JWT Access Token contains the required
+        <strong>admin:all</strong> permission, allowing access to privileged
+        platform operations.
+
+    </p>
+
+    <p>
+
+        Before this page was rendered, the platform validated your JWT
+        signature using the Auth0 JWKS endpoint and verified your permissions
+        against the requested administrative resource.
+
+    </p>
+
+</div>
+
+
+
+<div class="card">
+
+    <h2 class="section-title">
+
+        Platform Actions
+
+    </h2>
+
+    <div class="button-group">
+
+        <a
+            class="button"
+            href="/dashboard/">
+
+            Dashboard
+
+        </a>
+
+        <a
+            class="button"
+            href="/api/profile/">
+
+            Identity Profile
+
+        </a>
+
+        <a
+            class="button"
+            href="/logout/">
+
+            Logout
+
+        </a>
+
+    </div>
+
+</div>
+
+
+
+<div class="footer">
+
+    <p>
+
+        Mission Auth0 Infra
+
+    </p>
+
+    <p>
+
+        Role-Based Access Control • JWT Validation • Auth0 RBAC • Django
+
+    </p>
+
+</div>
+
+{% endblock %}

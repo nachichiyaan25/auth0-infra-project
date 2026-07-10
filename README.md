@@ -124,7 +124,7 @@ Mission Auth0 Infra is organized into independent engineering layers, each respo
 
 ### Overall Solution Architecture Diagram
 
-![Solution Architecture](Screenshots/General/Architecture_Diagram_AOI.png)
+![Solution Architecture](screenshots/09-Architecture/solution_architecture.png)
 
 > **Note**
 >
@@ -227,7 +227,7 @@ The authentication architecture was designed to achieve the following engineerin
 
 ### IAM Flow Diagram
 
-↓ IMAGE
+![IAM Flow Diagram](screenshots/07-IAM/iam_flow_diagram.png)
 
 The Authentication & IAM implementation demonstrates how modern identity platforms integrate with cloud-native applications through standardized protocols and centralized identity management. While authentication establishes user identity, secure application deployment requires a reliable cloud infrastructure capable of hosting, networking, and exposing the platform to end users.
 
@@ -256,7 +256,7 @@ The cloud infrastructure was designed to achieve the following engineering objec
 
 ### AWS Infrastructure Diagram
 
-↓ IMAGE
+![AWS Infrastructure Diagram](screenshots/05-AWS/aws_infra_diagram.png)
 
 ### Infrastructure Components
 
@@ -307,7 +307,7 @@ The Terraform implementation was designed to achieve the following engineering o
 
 ### Terraform Architecture Diagram
 
-↓ IMAGE
+![Terraform Architecture Diagram](screenshots/04-Terraform/terraform_architecture_diagram.png)
 
 ### Terraform Repository Structure
 
@@ -372,8 +372,6 @@ terraform/
 Mission Auth0 Infra follows a structured infrastructure lifecycle that converts declarative Terraform configurations into provisioned AWS resources while maintaining consistent infrastructure state across environments.
 
 The workflow begins with infrastructure definitions stored within the repository, validates proposed infrastructure changes through execution planning, provisions cloud resources after approval, exports deployment information through Terraform outputs, and finally integrates with the automated application deployment pipeline.
-
-↓ IMAGE
 
 ### Infrastructure Components Managed
 
@@ -440,8 +438,9 @@ The workflow begins with source code changes committed to the repository, valida
 
 Each workflow stage is designed to execute a specific engineering responsibility while maintaining environment isolation, deployment consistency, and repeatable operational practices across Development and Production environments.
 
-↓
-CI/CD Workflow Diagram
+### CI/CD Workflow Diagram
+
+![CI/CD Workflow Diagram](screenshots/03-CI_CD/ci_cd_worflow.png)
 
 ### Pipeline Stages
 
@@ -459,8 +458,9 @@ The CI/CD implementation separates infrastructure provisioning, application depl
 | Health Verification      | Verify application availability after deployment |
 | Destroy Workflow         | Safely decommission infrastructure when requested |
 
-↓
-CI/CD Architecture Diagram
+### CI/CD Architecture Diagram
+
+![CI/CD Architecture Diagram](screenshots/03-CI_CD/ci_cd_architecture.png)
 
 ### Workflow Responsibilities
 
@@ -475,8 +475,9 @@ Mission Auth0 Infra separates deployment automation into specialized GitHub Acti
 | Deployment Validation       | Confirms successful provisioning and application availability |
 | Infrastructure Destroy      | Removes cloud resources safely when requested |
 
-↓
-Deployment Lifecycle Diagram
+### Deployment Lifecycle Diagram
+
+![Deployment Lifecycle Diagram](screenshots/03-CI_CD/deployment_lifecycle.png)
 
 ### Engineering Design Decisions
 
@@ -836,15 +837,13 @@ The platform had successfully automated deployment.
 
 The next evolution will be focused on automating platform operations.
 
-> **Application deployment had become automated. Platform operations had not.**
+> **Application deployment has become automated. Platform operations is not.**
 
 The next stage transforms Mission Auth0 Infra from an automated deployment platform into a continuously evolving Platform Engineering ecosystem capable of supporting Kubernetes, GitOps, observability, autoscaling, and production-scale operational practices.
 
+### Deployment Evolution Diagram
 
-
-### Evolution Diagram
-
-
+![Deployment Evolution Diagram](screenshots/09-Architecture/deployment_evolution.png)
 
 ### Deployment Evolution Summary
 
@@ -914,6 +913,11 @@ This organization simplifies navigation, encourages modular engineering practice
 | Screenshots & Demonstrations | `screenshots/`       |
 
 
+### Repository Structure Diagram
+
+![Repository Structure Diagram](screenshots/09-Architecture/repository_structure.png)
+
+
 The repository structure explains where each engineering capability is implemented.
 
 The following section presents Mission Auth0 Infra through architecture diagrams, deployment workflows, application screenshots, and platform demonstrations that provide visual evidence of the engineering capabilities implemented throughout the platform.
@@ -921,6 +925,17 @@ The following section presents Mission Auth0 Infra through architecture diagrams
 ---
 
 ## 📸 Project Showcase
+
+Intro
+
+### Platform Deployment Overview
+
+![Platform Deployment Overview](screenshots/01-General/platform_deployment_overview.png)
+
+
+### Github Repository Workflows
+
+
 
 ---
 
