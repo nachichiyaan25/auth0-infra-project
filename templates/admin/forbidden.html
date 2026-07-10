@@ -10,19 +10,23 @@ Access Denied
 
     <h1 class="page-title">
 
-        Access Denied
+        Admin Access Denied
 
     </h1>
 
     <p class="page-subtitle">
 
-        Authentication succeeded, but authorization requirements were not satisfied.
+        Authentication succeeded, but you don't have the required authorization to access this resource.
 
     </p>
 
     <span class="badge badge-error">
 
-        Authorization Failed
+        <h3>
+            
+            Authorization Failed
+
+        </h3>
 
     </span>
 
@@ -104,7 +108,7 @@ Access Denied
 
             <span class="badge badge-error">
 
-                Denied
+                Failed
 
             </span>
 
@@ -116,13 +120,13 @@ Access Denied
 
             <h3>
 
-                Current Roles
+                Granted Permissions
 
             </h3>
 
             <p>
 
-                {{ roles }}
+                {{ permissions }}
 
             </p>
 
@@ -140,7 +144,7 @@ Access Denied
 
             <p>
 
-                admin:all
+                {{ required_permission }}
 
             </p>
 
@@ -162,8 +166,7 @@ Access Denied
 
     <p>
 
-        Mission Auth0 Infra protects administrative resources using
-        Role-Based Access Control (RBAC).
+       Administrative resources are protected using Role-Based Access Control (RBAC).
 
     </p>
 
@@ -199,7 +202,23 @@ Access Denied
 
             <h3>
 
-                Granted Permissions
+                Current Roles
+
+            </h3>
+
+            <p>
+
+                {{ roles }}
+
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+
+                Role Permissions
 
             </h3>
 
