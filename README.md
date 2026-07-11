@@ -430,6 +430,10 @@ The CI/CD implementation was designed to achieve the following engineering objec
 - Establish repeatable deployment pipelines that support future platform evolution.
 - Provide a deployment foundation that can be extended with Kubernetes, GitOps, automated testing, and observability workflows.
 
+### CI/CD Architecture Diagram
+
+![CI/CD Architecture Diagram](screenshots/03-CI_CD/ci_cd_architecture.png)
+
 ### Workflow Overview
 
 Mission Auth0 Infra follows a fully automated engineering workflow where every infrastructure modification and application release progresses through version-controlled GitHub Actions pipelines.
@@ -457,10 +461,6 @@ The CI/CD implementation separates infrastructure provisioning, application depl
 | Application Deployment   | Deploy the latest application using Docker Compose |
 | Health Verification      | Verify application availability after deployment |
 | Destroy Workflow         | Safely decommission infrastructure when requested |
-
-### CI/CD Architecture Diagram
-
-![CI/CD Architecture Diagram](screenshots/03-CI_CD/ci_cd_architecture.png)
 
 ### Workflow Responsibilities
 
@@ -509,7 +509,7 @@ Terraform transforms infrastructure into reusable Infrastructure as Code.
 
 GitHub Actions orchestrates provisioning, deployment, approvals, validation, and lifecycle management.
 
-Together, these engineering capabilities establish a platform where a source code merge represents an engineering decision rather than an operational task. Once approved, the platform provisions infrastructure, deploys the application, performs validation, and prepares the environment for users through completely automated workflows.
+< **Together, these engineering capabilities establish a platform where a source code merge represents an engineering decision rather than an operational task. Once approved, the platform provisions infrastructure, deploys the application, performs validation, and prepares the environment for users through completely automated workflows.**
 
 ### Project Secret
 
@@ -519,11 +519,7 @@ What follows that merge is not a shortcut.
 
 It is the result of every engineering decision described throughout this project.
 
-> **Engineering is not measured by how many manual steps can be performed correctly. Engineering is measured by how many manual steps no longer need to exist.**
-
-Mission Auth0 Infra has gradually evolved around this engineering philosophy.
-
-Every implementation introduced throughout the platform has moved one step closer to reducing operational complexity through thoughtful architecture, repeatable automation, and continuous engineering evolution.
+> **Every implementation introduced throughout the platform has moved one step closer to reducing operational complexity through thoughtful architecture, repeatable automation, and continuous engineering evolution.**
 
 The platform did not begin with this level of automation.
 
@@ -915,8 +911,7 @@ This organization simplifies navigation, encourages modular engineering practice
 
 ### Repository Structure Diagram
 
-![Repository Structure Diagram](screenshots/09-Architecture/repository_structure.png)
-
+![Repository Structure Diagram](screenshots/01-General/repository_structure.png)
 
 The repository structure explains where each engineering capability is implemented.
 
@@ -924,85 +919,574 @@ The following section presents Mission Auth0 Infra through architecture diagrams
 
 ---
 
-## 📸 Project Showcase
+## 📸 End-to-End Platform Demonstration
 
-Intro
+Mission Auth0 Infra is more than a collection of cloud resources, automation workflows, and application components.
+
+This section demonstrates the complete engineering lifecycle of the platform exactly as it operates in production—from a developer committing code locally to a fully provisioned cloud environment, automated application deployment, secure identity authentication, Role-Based Access Control (RBAC), and protected application access.
+
+Rather than describing each engineering capability individually, the following walkthrough presents the platform as a continuous operational journey. Every screenshot represents a real implementation executed during development and production deployments, providing visual evidence of the engineering practices implemented throughout the project.
+
+The demonstration follows the same lifecycle experienced by both developers and end users:
+
+> **Source Code → GitHub → CI/CD → Terraform → AWS → Docker → Auth0 → Application**
 
 ### Platform Deployment Overview
 
+The following diagram summarizes the complete engineering lifecycle implemented throughout Mission Auth0 Infra. Every capability described within this repository contributes to one stage of this deployment journey.
+
 ![Platform Deployment Overview](screenshots/01-General/platform_deployment_overview.png)
 
+## 🛠️ GitHub Engineering Workflows
 
-### Github Repository Workflows
+Every engineering activity within Mission Auth0 Infra begins with version-controlled source code managed through GitHub.
+
+Rather than deploying infrastructure or applications manually, every modification progresses through Pull Requests, environment approvals, Terraform planning, infrastructure provisioning, and automated application deployment using GitHub Actions.
+
+Development and Production environments intentionally follow similar engineering practices while introducing additional approval gates to protect production deployments.
+
+### Development Environment Workflow
+
+Application development begins locally before changes are synchronized with the central repository.
+
+### Developer Pushes Changes from Local Environment
+
+[Git Push](screenshots/02-Github/git_push.png)
+
+### Create Pull Request from Feature → Development
+
+Infrastructure changes are proposed through Pull Requests rather than direct branch modifications.
+
+![Create PR Dev](screenshots/02-Github/create_pr_dev.png)
+
+### Terraform Plan Executes Automatically
+
+Opening the Pull Request automatically triggers the Development Terraform Plan workflow.
+
+![Terraform Plan Dev](screenshots/02-Github/action_plan_dev.png)
+
+### Review Infrastructure Changes 
+
+Github publishes the execution plan directly inside the Pull Request, allowing proposed infrastructure modifications to be reviewed before deployment.
+
+![Comment Plan Dev](screenshots/02-Github/comment_plan_dev.png)
+
+### Merge After Infrastructure Review
+
+Following successful review, the Pull Request is merged into the Development branch.
+
+![Merge PR Dev](screenshots/02-Github/merge_pr_dev.png)
+
+### Automated Development Deployment
+
+The merge automatically provisions infrastructure, deploys the application, and validates the deployment using GitHub Actions.
+
+![Platform Deploy Dev](screenshots/02-Github/action_deploy_dev.png)
+
+Production deployments follow the same engineering workflow while introducing controlled approval gates to protect live infrastructure and application environments.
+
+### Production Environment Workflow
+
+Unlike Development, Production deployments require explicit human approval before infrastructure provisioning and application deployment begin.
+
+This approval-driven workflow protects live environments while preserving the same automated engineering practices used throughout the platform.
+
+### Create Pull Request (Development → Main)
+
+![Create PR Prod](screenshots/02-Github/create_pr_prod.png)
+
+### Terraform Plan Awaits Approval
+
+![Review Plan Prod](screenshots/02-Github/review_plan_prod.png)
+
+### Infrastructure Approval
+
+![Approve Plan Prod](screenshots/02-Github/approve_plan_prod.png)
+
+### Terraform Plan Execution
+
+![Terraform Plan Prod](screenshots/02-Github/action_plan_prod.png)
+
+### Review Proposed Infrastructure
+
+![Comment Plan Prod](screenshots/02-Github/comment_plan_prod.png)
+
+### Merge Pull Request
+
+![Merge PR Prod](screenshots/02-Github/merge_pr_prod.png)
+
+### Production Deployment Approval
+
+![Review Deployment Prod](screenshots/02-Github/review_deployment_prod.png)
+
+### Deployment Approval Granted
+
+![Approve Deployment Prod](screenshots/02-Github/approve_deployment_prod.png)
+
+### Fully Automated Production Deployment
+
+GitHub Actions provisions infrastructure, deploys the application, configures runtime services, and validates the deployment without requiring manual operational intervention.
+
+![Platform Deployment Prod](screenshots/02-Github/action_deploy_prod.png)
+
+With deployment automation established through GitHub Actions, the next stage explores the Infrastructure as Code workflows responsible for transforming declarative Terraform configurations into fully provisioned AWS infrastructure across Development and Production environments.
+
+## 🏗️ Terraform Infrastructure Workflows
+
+Mission Auth0 Infra provisions its complete cloud infrastructure using Terraform.
+
+Every networking component, compute resource, security configuration, routing rule, and application load balancer is defined declaratively as Infrastructure as Code and executed automatically through GitHub Actions workflows.
+
+The following workflow executions demonstrate the complete infrastructure lifecycle including initialization, planning, provisioning, updates, approvals, and controlled destruction across Development and Production environments.
+
+### Terraform Initialization
+
+Every Terraform workflow begins by selecting the target environment based on the branch that triggered the workflow.
+
+GitHub Actions initializes Terraform, downloads the required providers, configures the remote backend, and prepares the working directory for infrastructure operations.
+
+![Terraform Init](screenshots/04-Terraform/terraform_init.png)
+
+### Terraform Planning
+
+After initialization, Terraform compares the desired infrastructure configuration stored within the repository against the existing infrastructure state maintained in the remote backend.
+
+Based on this comparison, Terraform generates an execution plan describing every infrastructure change required to reconcile the desired and current cloud environments while respecting resource dependencies.
+
+Terraform begins analyzing the infrastructure configuration and builds the dependency graph required for execution.
+
+### Terraform Plan Start
+
+![Terraform Plan Start](screenshots/04-Terraform/terraform_plan_start.png)
+
+### Terraform Plan End
+
+![Terraform Plan End](screenshots/04-Terraform/terraform_plan_end.png)
+
+The completed execution plan summarizes every infrastructure action including resource creation, modification, replacement, or deletion before any changes are applied to the AWS environment.
+
+The generated execution plan is automatically published as both a GitHub Pull Request comment and a workflow artifact, allowing infrastructure changes to be reviewed before provisioning begins.
+
+Only after the Pull Request is approved and merged does the Apply workflow execute, ensuring every infrastructure modification follows an approval-driven engineering process.
+
+### Terraform Apply
+
+Following successful review and approval, GitHub Actions automatically executes the Apply workflow for the corresponding environment.
+
+Terraform provisions the required AWS infrastructure while preserving resource dependencies, state consistency, and environment isolation throughout the deployment process.
+
+### Terraform Apply Start
+
+![Terraform Apply Start](screenshots/04-Terraform/apply_start_dev.png)
+
+### Terraform Apply End
+
+![Terraform Apply Complete](screenshots/04-Terraform/apply_complete_dev.png)
+
+Once provisioning completes successfully, the complete cloud platform becomes available and Terraform exports infrastructure outputs required by downstream deployment workflows.
+
+The following section demonstrates the AWS infrastructure automatically provisioned by Terraform through the GitHub Actions deployment pipeline.
 
 
+### AWS Resources Provisioned
+
+
+
+> **Security Notice**
+>
+> The AWS resources presented throughout this documentation were created exclusively for demonstration purposes and have been permanently destroyed after capturing the screenshots.
+>
+> Sensitive infrastructure information including ARNs, public IP addresses, VPC identifiers, security group identifiers, backend configuration, secrets, and account-specific metadata has been intentionally omitted following cloud security best practices.
+
+Infrastructure provisioning represents only one aspect of the platform lifecycle.
+
+Mission Auth0 Infra also supports controlled infrastructure decommissioning through a dedicated Terraform Destroy workflow, enabling complete environment teardown whenever required.
+
+## 🗑️ Terraform Destroy Workflow
+
+Infrastructure destruction is intentionally isolated into a dedicated GitHub Actions workflow rather than being triggered automatically.
+
+This design provides complete operational control while preventing accidental deletion of cloud resources.
+
+### Select Environment to Destory
+
+The operator explicitly selects the target environment before initiating infrastructure destruction.
+
+![Controlled Destroy](screenshots/04-Terraform/controlled_destroy.png)
+
+### Destroy Review and Approval
+
+Production environments require manual approval before any destructive infrastructure operation can begin, providing an additional layer of operational protection.
+
+![Destroy Review](screenshots/04-Terraform/destroy_review.png)
+
+![Destroy Approval](screenshots/04-Terraform/destroy_approval.png)
+
+### Destroy Action
+
+After approval, Terraform safely removes every managed AWS resource while respecting infrastructure dependencies and state consistency.
+
+![Destroy Workflow](screenshots/04-Terraform/destroy_workflow.png)
+
+### Platform Destroy Completed
+
+The workflow successfully decommissions the complete cloud environment including networking, compute resources, security configuration, and application infrastructure.
+
+![Destroy Complete](screenshots/04-Terraform/destroy_complete.png)
+
+The complete Terraform lifecycle demonstrates how Mission Auth0 Infra manages cloud infrastructure through version-controlled engineering workflows.
+
+From execution planning and approval-driven provisioning to controlled infrastructure destruction, every operation is automated, reproducible, and fully integrated with GitHub Actions.
+
+This approach transforms infrastructure management into a predictable engineering process rather than a sequence of manual cloud operations.
+
+> **Demonstration Availability**
+>
+> Live demonstrations of the complete provisioning workflow—including Terraform planning, infrastructure deployment, approval gates, environment isolation, and controlled destroy operations—can be provided upon request.
+
+Infrastructure alone does not deliver a running platform.
+
+Once the cloud environment has been provisioned successfully, the deployment pipeline automatically initializes the application runtime using Docker Compose, transforming newly created infrastructure into a fully operational cloud application.
+
+The next section demonstrates how Mission Auth0 Infra transitions seamlessly from infrastructure provisioning to application execution.
+
+## 🐳 Docker Runtime
+
+Mission Auth0 Infra executes as a containerized application running on Amazon EC2.
+
+Rather than installing application dependencies directly onto the operating system, the complete runtime environment—including the Django application, PostgreSQL database, networking, and startup configuration—is encapsulated within Docker containers.
+
+This containerized approach ensures that the application behaves identically across local development, cloud environments, and future deployment platforms without requiring environment-specific configuration.
+
+The same Docker image developed and tested locally is deployed unchanged to AWS, demonstrating one of the fundamental engineering principles of containerization:
+
+> **Build Once. Run Anywhere.**
+
+### Multi-Container Orchestration
+
+Docker Compose orchestrates the complete application runtime by coordinating multiple containers as a single platform.
+
+During deployment it automatically:
+
+- Builds the latest Django application image
+- Creates the PostgreSQL database container
+- Creates a persistent Docker Volume for database storage
+- Establishes an isolated Docker Network
+- Starts all application services in dependency order
+- Maintains communication between containers
+
+![Multi Container Orchestration](screenshots/06-Docker/multi_container_orchestration.png)
+
+Together these containers form the complete runtime environment required for Mission Auth0 Infra.
+
+### Application Runtime Update
+
+Every new deployment follows the same reproducible workflow.
+
+Rather than modifying the running application manually, Docker Compose stops the existing containers, rebuilds the latest application image from the updated source code, recreates the runtime environment, and starts the new platform automatically.
+
+![Containers Stop](screenshots/06-Docker/containers_stop.png)
+
+![Containers Start](screenshots/06-Docker/containers_start.png)
+
+The deployment workflow concludes by verifying application health before GitHub Actions marks the deployment as successful.
+
+One of the key engineering advantages demonstrated throughout Mission Auth0 Infra is that the deployment workflow remains identical regardless of the target environment.
+
+> **The same Dockerfile used during local development is executed without modification inside the AWS production environment, eliminating environment-specific deployment differences and ensuring consistent platform behavior.**
+
+### Runtime Administration
+
+Although the complete deployment process is automated, administrators can securely connect to the host EC2 instance whenever operational troubleshooting or runtime verification is required.
+
+![Remote Access](screenshots/06-Docker/remote_access.png)
+
+The platform can also be accessed directly through the AWS EC2 Console for operational management and infrastructure troubleshooting.
+
+![EC2 Access](screenshots/06-Docker/ec2_access.png)
+
+### Container Inspection
+
+Docker provides operational visibility into every running service.
+
+Administrators can inspect container logs, verify runtime behavior, troubleshoot deployment issues, and monitor application startup directly from the Docker runtime.
+
+![Container Inspection](screenshots/06-Docker/container_inspection.png)
+
+### Interactive Container Access
+
+Individual containers can be accessed interactively for debugging, configuration verification, package inspection, and runtime troubleshooting whenever deeper operational analysis is required.
+
+![Interactive Container Access](screenshots/06-Docker/interactive_container_access.png)
+
+### Image Distribution
+
+Docker images can be published to a container registry such as Docker Hub, allowing identical application images to be shared, versioned, and deployed consistently across multiple environments.
+
+Container registries eliminate the need to rebuild application images on every target server and provide a centralized source for deployment artifacts.
+
+![Docker Hub Image](screenshots/06-Docker/docker_hub_image.png)
+
+### Engineering Benefits
+
+Containerization provides several engineering advantages throughout the platform lifecycle:
+
+| Capability              | Benefit                                                                    |
+|-------------------------|----------------------------------------------------------------------------|
+| Environment Consistency | Identical runtime across Development and Production                        |
+| Isolation               | Application dependencies remain independent from the host operating system |
+| Portability             | Deploy the same image anywhere Docker is available                         |
+| Reproducibility         | Every deployment follows an identical execution process                    |
+| Scalability             | Containers become building blocks for future Kubernetes deployments        |
+
+Containerization transforms infrastructure into a running platform.
+
+However, a running application alone does not provide secure access.
+
+Before users can interact with Mission Auth0 Infra, every request must pass through a complete Identity and Access Management workflow involving authentication, authorization, session establishment, and Role-Based Access Control.
+
+The next section follows the complete identity journey experienced by every user—from accessing the Application Load Balancer to receiving a validated application session.
+
+## 🔐 Identity & Access Management Journey
+
+Cloud infrastructure and containerized applications provide a reliable runtime environment, but they do not solve one of the most fundamental challenges of modern applications:
+
+**Who is the user?**
+
+**Can they be trusted?**
+
+**What are they allowed to access?**
+
+Mission Auth0 Infra integrates Auth0, OAuth 2.0, OpenID Connect (OIDC), JSON Web Tokens (JWT), and Role-Based Access Control (RBAC) to provide secure authentication, delegated authorization, and fine-grained access control across the entire platform.
+
+The following walkthrough demonstrates the complete identity journey experienced by every user—from accessing the public application endpoint to receiving a secure authenticated session within the platform.
+
+## Public Application Access
+
+The application is exposed to end users through an AWS Application Load Balancer (ALB), which serves as the public entry point into the platform.
+
+![ALB DNS](screenshots/07-IAM/alb_dns.png)
+
+**ALB DNS: http://auth0-infra-dev-alb-291123042.ap-south-1.elb.amazonaws.com/**
+
+> **Security Note**
+>
+> This demonstration environment intentionally uses HTTP over the generated AWS ALB DNS name.
+>
+> Production deployments should always use a custom domain secured with HTTPS, AWS Certificate Manager (ACM), and TLS encryption to protect all client-server communication.
+
+When an unauthenticated user attempts to access the application, Django immediately redirects the request to Auth0 Universal Login to begin the authentication process.
+
+Since the application is integrated with Auth0, ALB will redirect users to Auth0 Universal Login Page for Authentication before accessing the application.
+
+### Auth0 Universal Login
+
+Auth0 acts as the centralized Identity Platform for Mission Auth0 Infra.
+
+Rather than managing usernames and passwords directly, the application delegates authentication to trusted external Identity Providers configured within Auth0.
+
+Users simply choose their preferred Identity Provider to begin authentication.
+
+![Auth0 Universal Login](screenshots/07-IAM/auth0_universal_login.png)
+
+### Identity Provider Authentication
+
+After selecting an Identity Provider such as Google or GitHub, users authenticate directly with the provider.
+
+Because authentication occurs outside the application itself, Mission Auth0 Infra never stores or manages user passwords, significantly reducing security risks while leveraging enterprise-grade authentication services.
+
+![Google Sign In](screenshots/07-IAM/google_sign_in.png)
+
+### User Consent
+
+Before identity information is shared, the Identity Provider requests explicit user consent.
+
+The requested OAuth scopes define exactly which identity attributes Auth0 is permitted to access.
+
+For this project, the requested scopes primarily include:
+
+- OpenID
+- Profile
+- Email
+
+![User Consent](screenshots/07-IAM/user_consent.png)
+
+These scopes provide only the information required to establish an authenticated user session while preserving user privacy through delegated authorization.
+
+Following successful consent, Auth0 creates or updates the user profile, issues an ID Token and Access Token, and redirects the authenticated user back to the application.
+
+### Dashboard
+
+After authentication completes successfully, users arrive at the Mission Auth0 Infra dashboard.
+
+The dashboard summarizes the authenticated identity, assigned roles, granted permissions, and available platform capabilities while serving as the central navigation point throughout the application.
+
+![Dashboard](screenshots/07-IAM/dashboard_view.png)
+
+![Platform Capabilities](screenshots/07-IAM/platform_capabilities.png)
+
+### Identity Profile
+
+Every successful authentication creates or updates the user's identity within Auth0 using the information provided by the external Identity Provider.
+
+The Identity Profile page explains exactly which attributes were returned by the Identity Provider, why user consent was required, and how OAuth scopes translate into identity information consumed by the application.
+
+Rather than presenting raw token claims, the page transforms identity metadata into an educational walkthrough of modern authentication.
+
+![Identity Profile](screenshots/07-IAM/identity_profile.png)
+
+![Granted Scopes](screenshots/07-IAM/granted_scopes.png)
+
+The authenticated session also establishes the relationship between the browser, Django application, Auth0, and the authenticated user while preserving identity throughout the browsing session.
+
+### Administrator Console
+
+Authentication verifies who a user is.
+
+Authorization determines what that user is allowed to do.
+
+Mission Auth0 Infra protects privileged functionality using Role-Based Access Control (RBAC), ensuring administrative operations remain accessible only to authorized identities possessing the required permissions.
+
+![Admin Conole](screenshots/07-IAM/admin_console.png)
+
+### Admin Capabilities
+
+Authenticated administrators can view their assigned permissions, authorization source, JWT validation details, and platform capabilities demonstrating how privileged operations are protected throughout the application.
+
+![Admin Capabilities](screenshots/07-IAM/admin_capabilities.png)
+
+### Authorization Failure
+
+If a user attempts to access administrative resources without the required permission, the request is denied even though authentication completed successfully.
+
+This distinction demonstrates one of the most important concepts in Identity and Access Management:
+
+**Authentication does not imply Authorization.**
+
+![Admin Access Denied](screenshots/07-IAM/admin_access_denied.png)
+
+The Access Denied page explains precisely why authorization failed, identifies the missing permission, displays the user's current roles, and provides guidance for obtaining the required access.
+
+Rather than exposing a generic HTTP 403 response, the application educates users about the underlying authorization decision.
+
+![Access Denied Reason](screenshots/07-IAM/access_denied_reason.png)
+
+> **This demonstrates Role-Based Access Control (RBAC) and the Principle of Least Privilege, ensuring users receive only the permissions required to perform their responsibilities while preventing unauthorized access to privileged platform resources.**
+
+The complete identity journey—from public internet access through the Application Load Balancer to external authentication, delegated authorization, secure token issuance, session establishment, and Role-Based Access Control—executes automatically within only a few seconds.
+
+Although end users simply experience a familiar **"Continue with Google"** button, that single interaction coordinates multiple industry standards including OAuth 2.0, OpenID Connect (OIDC), JSON Web Tokens (JWT), delegated authorization, secure session management, and cloud-native identity architecture behind the scenes.
+
+> **Mission Auth0 Infra began as an effort to understand Auth0 beyond basic authentication. It evolved into a complete cloud-native platform demonstrating how modern infrastructure, deployment automation, containerization, identity management, and secure application architecture work together to deliver a production-ready engineering solution.**
+
+While the previous sections demonstrate Mission Auth0 Infra in operation, the Documentation Portal explores the engineering decisions, implementation details, architectural patterns, and practical learnings behind every platform capability.
+
+Each document focuses on a specific engineering domain—including cloud infrastructure, Infrastructure as Code, deployment automation, containerization, identity management, and platform architecture—allowing readers to move beyond visual demonstrations and understand how the complete platform was designed, built, and evolved.
 
 ---
 
-## 📚 Documentation Portal
+🗺️ Future Roadmap
+
+Mission Auth0 Infra intentionally concludes as a complete production-ready platform for automated infrastructure provisioning, application deployment, and identity management.
+
+The engineering foundation established throughout this project was designed to support significantly more advanced platform capabilities. Rather than extending this repository indefinitely, these capabilities will be implemented in future Catalyst platforms where they naturally belong.
+
+The roadmap below represents the next engineering evolution built upon the foundations established by Mission Auth0 Infra.
+
+| Status  | Engineering Capability        | Planned Evolution                                                         |
+| ----    | ---------------------------- | ------------------------------------------------------------------------- |
+| ✅      | Identity & Access Management | Auth0, OAuth 2.0, OpenID Connect, RBAC, JWT, lifecycle automation         |
+| ✅      | Docker Platform              | Multi-container application deployment with Docker Compose                |
+| ✅      | AWS Cloud Infrastructure     | VPC, EC2, ALB, Security Groups, networking                                |
+| ✅      | Infrastructure as Code       | Modular Terraform architecture                                            |
+| ✅      | CI/CD Automation             | GitHub Actions, approval workflows, automated provisioning and deployment |
+| 🔄      | Engineering Documentation    | Architecture guides, implementation references, operational runbooks      |
+| ⏳      | Kubernetes                   | Container orchestration and workload scheduling                           |
+| ⏳      | Helm                         | Kubernetes package management                                             |
+| ⏳      | GitOps                       | Declarative continuous delivery using ArgoCD                              |
+| ⏳      | Observability                | Prometheus, Grafana, Loki, Alertmanager                                   |
+| ⏳      | Distributed Tracing          | OpenTelemetry integration                                                 |
+| ⏳      | TLS & HTTPS                  | ACM, Route53 and end-to-end encrypted communication                       |
+| ⏳      | Container Registry           | Amazon ECR                                                                |
+| ⏳      | Managed Databases            | Amazon RDS                                                                |
+| ⏳      | Secrets Management           | AWS Secrets Manager integration                                           |
+| ⏳      | Autoscaling                  | Auto Scaling Groups and Kubernetes HPA                                    |
+| ⏳      | Progressive Delivery         | Blue-Green and Canary deployments                                         |
+| ⏳      | Platform Monitoring          | CloudWatch dashboards and centralized logging                             |
+| ⏳      | Platform Security            | IAM hardening, WAF, security scanning and policy enforcement              |
+
+> **Every completed capability becomes the engineering foundation for the next. Mission Auth0 Infra ends here by design, allowing future Catalyst platforms to begin from a stronger starting point instead of starting over.**
 
 ---
 
-## 🗺️ Future Roadmap
+💡 Engineering Learnings
 
-Mission Auth0 Infra is designed as a continuously evolving engineering platform. Every completed implementation establishes a reusable foundation for subsequent capabilities, allowing the platform to grow incrementally without requiring significant architectural redesign.
+Mission Auth0 Infra reinforced a simple engineering principle:
 
-The roadmap reflects the planned engineering evolution of the platform as it progresses from application deployment toward a complete cloud-native Platform Engineering ecosystem.
+Great platforms are rarely built all at once. They evolve by solving one problem completely before introducing the next.
 
-| Status | Engineering Capability | Planned Evolution |
-|---------|------------------------|-------------------|
-| ✅ | Identity & Access Management | Authentication, RBAC, lifecycle automation, Auth0 Management API |
-| ✅ | Docker Platform | Containerized application execution |
-| ✅ | AWS Infrastructure | Networking, compute, security, load balancing |
-| ✅ | Infrastructure as Code | Modular Terraform infrastructure |
-| ✅ | CI/CD Automation | Automated provisioning and application deployment |
-| 🔄 | Engineering Documentation | Expand implementation guides and architecture references |
-| ⏳ | Kubernetes | Container orchestration and workload management |
-| ⏳ | Helm | Kubernetes package management |
-| ⏳ | GitOps | Declarative continuous delivery |
-| ⏳ | Observability | Prometheus, Grafana, Loki, Alertmanager |
-| ⏳ | TLS & HTTPS | End-to-end encrypted application delivery |
-| ⏳ | Managed Databases | Amazon RDS integration |
-| ⏳ | Container Registry | Amazon ECR |
-| ⏳ | Autoscaling | Elastic infrastructure scaling |
-| ⏳ | Progressive Delivery | Blue-Green and Canary deployments |
+Throughout this project, every architectural decision followed a small set of engineering principles:
 
-Every future implementation will extend the existing platform architecture while preserving the engineering principles established throughout Mission Auth0 Infra.
+- Build strong foundations before adding complexity.
+- Treat infrastructure, deployment pipelines, documentation, and application code as version-controlled engineering assets.
+- Prefer reusable engineering patterns over one-time implementation shortcuts.
+- Automate repetitive operational tasks whenever practical.
+- Keep systems simple while allowing them to evolve naturally.
+- Document not only what was built, but why it was built that way.
 
----
+The project gradually evolved from a local Docker application into a production-oriented cloud platform capable of provisioning infrastructure, deploying applications, managing identities, and validating operational health through fully automated workflows.
 
-## 💡 Engineering Learnings
-
-Mission Auth0 Infra demonstrates that modern platform engineering is built through continuous refinement rather than isolated implementations.
-
-Throughout the project, several engineering principles consistently guided architectural decisions:
-
-- Solve one engineering problem at a time while preparing the foundation for the next capability.
-- Treat infrastructure, application deployment, and documentation as version-controlled engineering assets.
-- Design reusable solutions instead of implementation-specific fixes.
-- Reduce manual operational effort through automation whenever practical.
-- Preserve architectural simplicity while increasing platform capabilities.
-- Document engineering decisions alongside implementation details to support future evolution.
-
-Every implementation throughout this project contributes to a platform that becomes increasingly automated, maintainable, reusable, and extensible over time.
+Each stage prepared the foundation for the next, demonstrating that sustainable platform engineering is achieved through continuous refinement rather than isolated implementations.
 
 > **Engineering is not measured by how many manual steps can be performed correctly. Engineering is measured by how many manual steps no longer need to exist.**
 
-Mission Auth0 Infra is built upon this engineering philosophy and will continue evolving accordingly.
+That philosophy became the guiding principle behind Mission Auth0 Infra and will continue shaping every future Catalyst platform.
 
 ---
 
 ## 👨‍💻 Author
 
-**S M Nachiketha**
+S M Nachiketha
 
-Platform Engineer | DevOps Engineer | Identity & Access Management
+Platform Engineer • DevOps Engineer • Identity & Access Management
 
-Mission Auth0 Infra represents a continuous engineering initiative focused on Platform Engineering, Infrastructure as Code, Cloud Automation, Identity & Access Management, and modern DevOps practices.
+My professional engineering journey began with Auth0, a platform that completely changed the way I looked at software engineering.
 
-The project is designed to evolve continuously as new engineering capabilities are implemented, documented, and integrated into the platform.
+What initially appeared to be a simple "Continue with Google" button gradually revealed an entire ecosystem of identity standards, security protocols, cloud infrastructure, deployment automation, APIs, and engineering practices working together behind the scenes.
+
+That curiosity naturally expanded into Python, cloud computing, Infrastructure as Code, containerization, CI/CD, and platform engineering—ultimately leading to the creation of Mission Auth0 Infra.
+
+This project represents much more than a technical implementation.
+
+It represents countless hours spent asking "Why does this work?" before asking "How do I build it?", learning through experimentation, embracing failures as part of the engineering process, and documenting every lesson along the way.
+
+Mission Auth0 Infra marks the beginning of a much larger journey toward building secure, scalable, cloud-native platforms that solve real engineering problems through automation, simplicity, and continuous learning.
 
 - GitHub: https://github.com/nachichiyaan25
+
 - LinkedIn: https://www.linkedin.com/in/s-m-nachiketha-4b8878196/
 
 ---
+
+## 🙏 Acknowledgements
+
+Mission Auth0 Infra stands on the shoulders of an extraordinary engineering community.
+
+My sincere appreciation goes to the creators, maintainers, researchers, educators, and open-source contributors whose work has shaped modern software engineering and made projects like this possible.
+
+Special thanks to the communities behind:
+
+Auth0
+Python
+Django
+Docker
+PostgreSQL
+Terraform
+GitHub Actions
+Amazon Web Services (AWS)
+OAuth 2.0 & OpenID Connect working groups
+The global open-source engineering community
+
+Their collective work continues to empower millions of engineers to learn, build, automate, and innovate every day.
+
+> **The best way to thank the engineering community is not only to use what they built, but to keep learning, keep building, and one day contribute something meaningful back.**
