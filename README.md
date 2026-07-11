@@ -1113,7 +1113,6 @@ Every request follows the infrastructure path below before reaching the applicat
 
 Internet
         │
-        ▼
 Application Load Balancer
         │
 Listener
@@ -1272,13 +1271,15 @@ The Internet Gateway connects the Virtual Private Cloud to the public internet.
 
 Without this component, external users would be unable to access the platform regardless of the application or load balancer configuration.
 
+![Internet Gateway](screenshots/05-AWS/internet_gateways.png)
+
 ## 📦 Terraform Remote Backend
 
 Infrastructure provisioning extends beyond compute and networking resources.
 
 Terraform also provisions the infrastructure responsible for managing its own remote state.
 
-This enables collaborative Infrastructure as Code workflows, version-controlled state management, and safe concurrent infrastructure modifications.
+> **This enables collaborative Infrastructure as Code workflows, version-controlled state management, and safe concurrent infrastructure modifications.**
 
 🪣 Amazon S3
 
