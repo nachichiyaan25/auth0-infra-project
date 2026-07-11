@@ -1,12 +1,12 @@
 # 🚀 Mission Auth0 Infra
 
-## Cloud & IAM Engineering Case Study
-
 <p align="center">
-  <img src="docs/assets/banner.png" alt="Mission Auth0 Infra Banner" width="100%">
+
+  <img src="screenshots/01-General/aoi_banner.png" alt="Mission Auth0 Infra Banner" width="100%">
+
 </p>
 
-<p align="center">
+## Cloud & IAM Engineering Case Study
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![Django](https://img.shields.io/badge/Django-5.2-success)
@@ -209,27 +209,34 @@ The authentication architecture was designed to achieve the following engineerin
 - Automate identity lifecycle operations including user provisioning, administrative workflows, and role management using the Auth0 Management API.
 - Demonstrate a scalable identity architecture representative of modern enterprise cloud applications.
 
-### IAM Capabilities
-
-| Engineering Capability  | Implementation                                               |
-| ----------------------- | ------------------------------------------------------------ |
-| Identity Provider       | Auth0 Universal Login                                        |
-| Authentication Methods  | Database Authentication, Google Login, GitHub Login          |
-| Authentication Protocol | OAuth 2.0 Authorization Code Flow + OpenID Connect           |
-| Identity Federation     | External Identity Providers through Auth0 Social Connections |
-| Token Management        | JWT Access Token, ID Token, Refresh Token                    |
-| Token Validation        | JWKS Endpoint                                                |
-| Authorization           | RBAC, Permissions, Custom Claims                             |
-| Custom Claims           | Auth0 Actions                                                |
-| Identity Automation     | Auth0 Management API                                         |
-| Session Management      | Django Sessions                                              |
-| API Protection          | Permission Decorators & JWT Validation                       |
-
 ### IAM Flow Diagram
 
 ![IAM Flow Diagram](screenshots/07-IAM/iam_flow_diagram.png)
 
-The Authentication & IAM implementation demonstrates how modern identity platforms integrate with cloud-native applications through standardized protocols and centralized identity management. While authentication establishes user identity, secure application deployment requires a reliable cloud infrastructure capable of hosting, networking, and exposing the platform to end users.
+### IAM Capabilities
+
+| Engineering Capability      |    Implementation                                            |
+| --------------------------- | ------------------------------------------------------------ |
+| Identity Provider           | Auth0 Universal Login                                        |
+| Authentication Methods      | Database Authentication, Google Login, GitHub Login          |
+| Authentication Protocol     | OAuth 2.0 Authorization Code Flow + OpenID Connect           |
+| Identity Federation         | External Identity Providers through Auth0 Social Connections |
+| Token Management            | JWT Access Token, ID Token, Refresh Token                    |
+| Token Validation            | JWKS Endpoint                                                |
+| Authorization               | RBAC, Permissions, Custom Claims                             |
+| Custom Claims               | Auth0 Actions                                                |
+| Identity Automation         | Auth0 Management API                                         |
+| Session Management          | Django Sessions                                              |
+| API Protection              | Permission Decorators & JWT Validation                       |
+| Authentication Architecture | Hybrid Authentication (Local + Federated Identity)           |
+
+### Hybrid Authentication Model
+
+Mission Auth0 Infra demonstrates a hybrid authentication architecture where users can authenticate using either local database credentials or federated identity providers such as Google and GitHub.
+
+Regardless of the authentication source, every identity is centralized within Auth0 before being issued standardized OAuth 2.0 / OpenID Connect tokens. This abstraction allows the application to consume a single identity model while supporting multiple authentication mechanisms behind the scenes.
+
+> **The Authentication & IAM implementation demonstrates how modern identity platforms integrate with cloud-native applications through standardized protocols and centralized identity management. While authentication establishes user identity, secure application deployment requires a reliable cloud infrastructure capable of hosting, networking, and exposing the platform to end users.**
 
 The next section explores the Cloud Infrastructure that provisions and operates Mission Auth0 Infra on AWS.
 
@@ -271,7 +278,6 @@ The cloud infrastructure was designed to achieve the following engineering objec
 | EC2 Instance              | Hosts the Dockerized Django application                 |
 | Application Load Balancer | Distributes client traffic and performs health checks   |
 
-
 ### Engineering Design Decisions
 
 The infrastructure architecture intentionally separates networking, traffic management, compute, and security into independent AWS services instead of combining multiple responsibilities within a single resource. This modular design improves maintainability, simplifies troubleshooting, and enables individual infrastructure components to evolve independently as the platform grows.
@@ -280,7 +286,7 @@ Environment isolation between Development and Production allows infrastructure c
 
 The current infrastructure establishes a reusable cloud foundation that supports future enhancements including managed databases, Kubernetes orchestration, container registries, TLS termination, DNS management, autoscaling, monitoring, and additional platform engineering capabilities without requiring major architectural redesign.
 
-The cloud infrastructure defines the runtime environment in which Mission Auth0 Infra operates. Provisioning and managing this infrastructure manually would be repetitive, error-prone, and difficult to maintain as the platform evolves.
+>**The cloud infrastructure defines the runtime environment in which Mission Auth0 Infra operates. Provisioning and managing this infrastructure manually would be repetitive, error-prone, and difficult to maintain as the platform evolves.**
 
 The next section explores how Infrastructure as Code (IaC) using Terraform transforms the complete cloud architecture into reusable, version-controlled, and repeatable infrastructure definitions.
 
@@ -404,7 +410,7 @@ Building infrastructure with Terraform extends beyond resource provisioning. The
 
 These learnings became foundational for the platform engineering practices implemented throughout Mission Auth0 Infra.
 
-The Terraform implementation transforms infrastructure into reusable, version-controlled definitions that can be consistently provisioned, updated, managed, and destroyed across environments. While Infrastructure as Code defines the desired cloud architecture, another engineering capability is responsible for executing these workflows whenever the platform evolves.
+>**The Terraform implementation transforms infrastructure into reusable, version-controlled definitions that can be consistently provisioned, updated, managed, and destroyed across environments. While Infrastructure as Code defines the desired cloud architecture, another engineering capability is responsible for executing these workflows whenever the platform evolves.**
 
 The next section explores how GitHub Actions orchestrates infrastructure provisioning, application deployment, environment approvals, and the complete operational lifecycle of Mission Auth0 Infra through automated CI/CD workflows.
 
@@ -509,7 +515,7 @@ Terraform transforms infrastructure into reusable Infrastructure as Code.
 
 GitHub Actions orchestrates provisioning, deployment, approvals, validation, and lifecycle management.
 
-< **Together, these engineering capabilities establish a platform where a source code merge represents an engineering decision rather than an operational task. Once approved, the platform provisions infrastructure, deploys the application, performs validation, and prepares the environment for users through completely automated workflows.**
+> **Together, these engineering capabilities establish a platform where a source code merge represents an engineering decision rather than an operational task. Once approved, the platform provisions infrastructure, deploys the application, performs validation, and prepares the environment for users through completely automated workflows.**
 
 ### Project Secret
 
@@ -908,7 +914,6 @@ This organization simplifies navigation, encourages modular engineering practice
 | Platform Documentation       | `README.md`          |
 | Screenshots & Demonstrations | `screenshots/`       |
 
-
 ### Repository Structure Diagram
 
 ![Repository Structure Diagram](screenshots/01-General/repository_structure.png)
@@ -1055,11 +1060,11 @@ Based on this comparison, Terraform generates an execution plan describing every
 
 Terraform begins analyzing the infrastructure configuration and builds the dependency graph required for execution.
 
-### Terraform Plan Start
+#### Terraform Plan Start
 
 ![Terraform Plan Start](screenshots/04-Terraform/terraform_plan_start.png)
 
-### Terraform Plan End
+#### Terraform Plan End
 
 ![Terraform Plan End](screenshots/04-Terraform/terraform_plan_end.png)
 
@@ -1087,20 +1092,254 @@ Once provisioning completes successfully, the complete cloud platform becomes av
 
 The following section demonstrates the AWS infrastructure automatically provisioned by Terraform through the GitHub Actions deployment pipeline.
 
+## 🌩 AWS Resources Provisioned
 
-### AWS Resources Provisioned
+Terraform has successfully completed infrastructure provisioning and exported the outputs required by the deployment pipeline.
 
+The following section presents the cloud resources automatically created for Mission Auth0 Infra and explains how each component contributes to securely delivering the application to end users.
 
+Rather than presenting AWS resources individually, the screenshots below follow the same request lifecycle experienced by every user—from the public internet to the running application hosted on Amazon EC2.
 
 > **Security Notice**
 >
-> The AWS resources presented throughout this documentation were created exclusively for demonstration purposes and have been permanently destroyed after capturing the screenshots.
+>The AWS resources presented throughout this documentation were provisioned exclusively for demonstration purposes and were permanently destroyed after the screenshots were captured.
 >
-> Sensitive infrastructure information including ARNs, public IP addresses, VPC identifiers, security group identifiers, backend configuration, secrets, and account-specific metadata has been intentionally omitted following cloud security best practices.
+>Sensitive infrastructure information including public IP addresses, ARNs, account identifiers, VPC IDs, subnet IDs, security group identifiers, backend configuration, secrets, and account-specific metadata has been intentionally removed following cloud security best practices.
 
-Infrastructure provisioning represents only one aspect of the platform lifecycle.
+## 🌐 Request Flow Overview
 
-Mission Auth0 Infra also supports controlled infrastructure decommissioning through a dedicated Terraform Destroy workflow, enabling complete environment teardown whenever required.
+Every request follows the infrastructure path below before reaching the application.
+
+Internet
+        │
+        ▼
+Application Load Balancer
+        │
+Listener
+        │
+Target Group
+        │
+Healthy EC2 Instance
+        │
+Docker Containers
+        │
+Django Application
+
+The following screenshots explain each infrastructure component responsible for this request lifecycle.
+
+## ⚖️ Application Load Balancer
+
+The Application Load Balancer (ALB) serves as the public entry point of the platform.
+
+Instead of exposing EC2 instances directly to the internet, all client requests are first received by the load balancer, which evaluates listener rules, performs health checks, and forwards traffic only to healthy application targets.
+
+This architectural pattern improves security, enables future horizontal scaling, and decouples client traffic from the application servers.
+
+![Application Load Balancer](screenshots/05-AWS/load_balancers.png)
+
+## 🗺 ALB Resource Map
+
+The resource map visualizes how incoming HTTP requests traverse the load balancing layer.
+
+The listener accepts requests on port 80, evaluates the configured forwarding rules, and routes traffic to the attached Target Group containing the application instances.
+
+This diagram provides an end-to-end view of the request path managed entirely by the Application Load Balancer.
+
+![ALB Resource Map](screenshots/05-AWS/alb_resource_map.png)
+
+## 🔐 Application Load Balancer Security Group
+
+Security Groups operate as virtual firewalls controlling network communication.
+
+The ALB Security Group exposes only the services required for users to access the platform while restricting unnecessary inbound connectivity.
+
+### Inbound Rules
+
+The inbound configuration accepts HTTP traffic on port 80, allowing end users to access Mission Auth0 Infra through the load balancer instead of directly accessing the application servers.
+
+![ALB SG Ingress](screenshots/05-AWS/alb_sg_ingress.png)
+
+### Outbound Rules
+
+The load balancer must communicate with multiple internal resources including Target Groups and EC2 instances for request forwarding and health monitoring.
+
+For this reason, outbound communication remains fully permissive.
+
+![ALB SG Egress](screenshots/05-AWS/alb_sg_egress.png)
+
+## 🎯 Target Groups
+
+Target Groups define the application resources capable of receiving traffic from the Application Load Balancer.
+
+Instead of forwarding requests directly to individual servers, the ALB forwards requests to the Target Group, which maintains the collection of healthy application instances.
+
+This abstraction allows instances to be added, replaced, or removed without modifying client-facing infrastructure.
+
+![Target Groups](screenshots/05-AWS/target_groups.png)
+
+## ❤️ Target Group Health Checks
+
+Before routing production traffic, the Application Load Balancer continuously verifies application health.
+
+Only instances responding successfully to the configured health endpoint receive user requests.
+
+One of the key engineering milestones during this project involved transforming failing health checks into consistently healthy targets, ensuring the application became eligible to receive production traffic.
+
+![TG Health Check](screenshots/05-AWS/tg_health_check.png)
+
+## 🖥 Registered Targets
+
+The registered targets identify the EC2 instances currently serving the application.
+
+Only healthy instances are eligible to receive client requests.
+
+As the platform evolves, additional instances can be added automatically without requiring modifications to the Application Load Balancer.
+
+![TG Target](screenshots/05-AWS/tg_target.png)
+
+## 💻 Amazon EC2
+
+Amazon EC2 hosts the Dockerized Mission Auth0 Infra application.
+
+> **Terraform provisions the compute infrastructure automatically, while GitHub Actions deploys the latest application version immediately after successful infrastructure provisioning.**
+
+This separation between infrastructure provisioning and application deployment enables repeatable cloud environments.
+
+![EC2 Instances](screenshots/05-AWS/ec2_instances.png)
+
+## 🔒 EC2 Security Group
+
+Unlike the Application Load Balancer, the EC2 instance is never exposed directly to the public internet.
+
+### Ingress Rules
+
+Inbound traffic is accepted only from the Application Load Balancer Security Group.
+
+This prevents direct client access while ensuring every request first passes through the load balancing layer.
+
+![Instances SG Egress](screenshots/05-AWS/instances_sg_ingress.png)
+
+### Egress Rules
+
+Outbound communication remains unrestricted, allowing the application to communicate with external services whenever required.
+
+![Instances SG Egress](screenshots/05-AWS/instances_sg_egress.png)
+
+## 🌐 Virtual Private Cloud (VPC)
+
+Every infrastructure component resides inside a dedicated Virtual Private Cloud.
+
+The VPC establishes an isolated networking boundary where routing, security, and communication policies are managed independently from other AWS environments
+
+![VPC Details](screenshots/05-AWS/vpc_details.png)
+
+## 🗺 VPC Resource Map
+
+The VPC Resource Map visualizes the complete networking topology.
+
+It demonstrates how public subnets, route tables, the Internet Gateway, security groups, and compute resources collaborate to provide secure application connectivity.
+
+![VPC Resource Map](screenshots/05-AWS/vpc_resource_map.png)
+
+## 📍 Public Subnets
+
+The platform currently provisions two public subnets distributed across multiple Availability Zones.
+
+This design provides the networking foundation required for future high availability and multi-instance deployments.
+
+![Subnet Details](screenshots/05-AWS/subnet_details.png)
+
+## 🛣 Route Tables
+
+Route Tables determine how network traffic traverses the Virtual Private Cloud.
+
+Public subnet traffic is routed to the Internet Gateway, enabling external users to access the Application Load Balancer.
+
+![Route Tables](screenshots/05-AWS/route_table.png)
+
+## 🔗 Route Table Associations
+
+Subnet associations connect each subnet to the appropriate routing configuration.
+
+This relationship ensures that every subnet follows the intended traffic routing policy defined by Terraform.
+
+![Route Table Associations](screenshots/05-AWS/rtb_subnet_associations.png)
+
+## 🌍 Internet Gateway
+
+The Internet Gateway connects the Virtual Private Cloud to the public internet.
+
+Without this component, external users would be unable to access the platform regardless of the application or load balancer configuration.
+
+## 📦 Terraform Remote Backend
+
+Infrastructure provisioning extends beyond compute and networking resources.
+
+Terraform also provisions the infrastructure responsible for managing its own remote state.
+
+This enables collaborative Infrastructure as Code workflows, version-controlled state management, and safe concurrent infrastructure modifications.
+
+🪣 Amazon S3
+
+Terraform stores infrastructure state files within Amazon S3, allowing the current infrastructure definition to remain consistent across deployments.
+
+The project separates Bootstrap, Development, and Production environments into independent state files while sharing a common backend architecture.
+
+![S3 Bucket](screenshots/05-AWS/s3_bucket.png)
+
+It contains folders -bootstrap and environments(which has dev and prod sub folders) which store state file to manage remote backend and environment specific state files resources() 
+
+## 📂 Environment State Organization
+
+Each environment maintains an independent state file.
+
+Separating Development and Production state prevents cross-environment interference while preserving identical infrastructure definitions.
+
+![S3 Environments](screenshots/05-AWS/s3_environments.png)
+
+## 📄 Terraform State File
+
+The Terraform State File records the current state of every managed infrastructure resource.
+
+Terraform compares this state against the desired configuration during every execution to determine the precise infrastructure changes required.
+
+![Terraform State File](screenshots/05-AWS/terraform_state_file.png)
+
+## 🕒 State Versioning
+
+Amazon S3 Versioning preserves historical copies of every Terraform State File.
+
+This provides an additional layer of operational resilience by enabling previous state versions to be recovered whenever necessary.
+
+![State File Versions](screenshots/05-AWS/state_file_versions.png)
+
+## ⚡ Amazon DynamoDB
+
+Terraform uses DynamoDB for distributed state locking.
+
+Before modifying infrastructure, Terraform acquires an exclusive lock, preventing multiple workflows from modifying the same infrastructure simultaneously.
+
+![Dynamo DB](screenshots/05-AWS/dynamo_db.png)
+
+## 🔐 State Lock Table
+
+The lock table stores active infrastructure locks together with metadata used to coordinate concurrent Terraform executions.
+
+This mechanism protects infrastructure consistency throughout automated provisioning workflows.
+
+![Dynamo DB Table](screenshots/05-AWS/dyanmo_db_table.png)
+
+## 🚀 Engineering Outcome
+
+The complete cloud environment presented throughout this section—including networking, routing, security, compute resources, load balancing, remote state management, and deployment dependencies—is provisioned through a single Terraform execution.
+
+GitHub Actions transforms this Infrastructure as Code implementation into a fully automated engineering workflow by executing planning, approval, provisioning, deployment, and validation without manual cloud configuration.
+
+> **From a single `terraform apply`, the platform provisions an entire production-style cloud environment. Combined with GitHub Actions, infrastructure becomes reproducible, version-controlled, approval-driven, and fully automated.**
+
+Infrastructure provisioning represents only one stage of the engineering lifecycle.
+
+Mission Auth0 Infra also supports controlled infrastructure decommissioning through a dedicated Terraform Destroy workflow, allowing complete environments to be removed safely whenever required.
 
 ## 🗑️ Terraform Destroy Workflow
 
@@ -1108,7 +1347,7 @@ Infrastructure destruction is intentionally isolated into a dedicated GitHub Act
 
 This design provides complete operational control while preventing accidental deletion of cloud resources.
 
-### Select Environment to Destory
+### Select Environment to Destroy
 
 The operator explicitly selects the target environment before initiating infrastructure destruction.
 
@@ -1277,7 +1516,17 @@ The application is exposed to end users through an AWS Application Load Balancer
 
 When an unauthenticated user attempts to access the application, Django immediately redirects the request to Auth0 Universal Login to begin the authentication process.
 
-Since the application is integrated with Auth0, ALB will redirect users to Auth0 Universal Login Page for Authentication before accessing the application.
+### Auth0 Application Configuration
+
+The Application Load Balancer (ALB) DNS name is registered within the Auth0 Application configuration as the application's **Allowed Callback URLs**, **Allowed Logout URLs**, and related redirect endpoints.
+
+These trusted URLs enable Auth0 to securely redirect users back to Mission Auth0 Infra after successful authentication and logout while preventing unauthorized redirection attacks.
+
+This configuration establishes the trust relationship between the Django application, Auth0, and external Identity Providers, allowing the OAuth 2.0 Authorization Code Flow with OpenID Connect (OIDC) to complete securely.
+
+![Application URLs](screenshots/07-IAM/application_urls.png)
+
+With the application endpoints registered and trusted by Auth0, unauthenticated users attempting to access Mission Auth0 Infra are automatically redirected to Auth0 Universal Login to begin the authentication process.
 
 ### Auth0 Universal Login
 
@@ -1321,7 +1570,7 @@ After authentication completes successfully, users arrive at the Mission Auth0 I
 
 The dashboard summarizes the authenticated identity, assigned roles, granted permissions, and available platform capabilities while serving as the central navigation point throughout the application.
 
-![Dashboard](screenshots/07-IAM/dashboard_view.png)
+![Dashboard View](screenshots/07-IAM/dashboard_view.png)
 
 ![Platform Capabilities](screenshots/07-IAM/platform_capabilities.png)
 
@@ -1347,7 +1596,7 @@ Authorization determines what that user is allowed to do.
 
 Mission Auth0 Infra protects privileged functionality using Role-Based Access Control (RBAC), ensuring administrative operations remain accessible only to authorized identities possessing the required permissions.
 
-![Admin Conole](screenshots/07-IAM/admin_console.png)
+![Admin Console](screenshots/07-IAM/admin_console.png)
 
 ### Admin Capabilities
 
@@ -1476,16 +1725,16 @@ My sincere appreciation goes to the creators, maintainers, researchers, educator
 
 Special thanks to the communities behind:
 
-Auth0
-Python
-Django
-Docker
-PostgreSQL
-Terraform
-GitHub Actions
-Amazon Web Services (AWS)
-OAuth 2.0 & OpenID Connect working groups
-The global open-source engineering community
+- Auth0
+- Python
+- Django
+- Docker
+- PostgreSQL
+- Terraform
+- GitHub Actions
+- Amazon Web Services (AWS)
+- OAuth 2.0 & OpenID Connect working groups
+- The global open-source engineering community
 
 Their collective work continues to empower millions of engineers to learn, build, automate, and innovate every day.
 
