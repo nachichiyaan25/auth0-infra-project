@@ -297,6 +297,14 @@ a{
 
 }
 
+.badge-error{
+
+    background:#ef4444;
+
+    color:white;
+
+}
+
 .badge-warning{
 
     background:#f59e0b;
