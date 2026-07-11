@@ -891,7 +891,7 @@ This organization simplifies navigation, improves maintainability, encourages mo
 | `sample_data/`       | Development datasets and testing resources                                                     |
 | `screenshots/`       | Documentation assets and project demonstrations                                                |
 | `README.md`          | Engineering overview and repository navigation                                                 |
-
+| `templates/`         | Template files for Front end visualisation                                                     |
 
 ### Repository Organization Principles
 
@@ -913,6 +913,7 @@ This organization simplifies navigation, encourages modular engineering practice
 | User Interface               | `dashboard/`         |
 | Platform Documentation       | `README.md`          |
 | Screenshots & Demonstrations | `screenshots/`       |
+| Template Files & UI          | `templates/`         |
 
 ### Repository Structure Diagram
 
@@ -956,7 +957,7 @@ Application development begins locally before changes are synchronized with the 
 
 ### Developer Pushes Changes from Local Environment
 
-[Git Push](screenshots/02-Github/git_push.png)
+![Git Push](screenshots/02-Github/git_push.png)
 
 ### Create Pull Request from Feature → Development
 
@@ -1263,7 +1264,7 @@ Subnet associations connect each subnet to the appropriate routing configuration
 
 This relationship ensures that every subnet follows the intended traffic routing policy defined by Terraform.
 
-![Route Table Associations](screenshots/05-AWS/rtb_subnet_associations.png)
+![Route Table Associations](screenshots/05-AWS/route_table_associations.png)
 
 ## 🌍 Internet Gateway
 
@@ -1590,9 +1591,9 @@ The authenticated session also establishes the relationship between the browser,
 
 ### Administrator Console
 
-Authentication verifies who a user is.
+> **Authentication verifies who a user is.**
 
-Authorization determines what that user is allowed to do.
+> **Authorization determines what that user is allowed to do.**
 
 Mission Auth0 Infra protects privileged functionality using Role-Based Access Control (RBAC), ensuring administrative operations remain accessible only to authorized identities possessing the required permissions.
 
