@@ -1554,7 +1554,7 @@ Before identity information is shared, the Identity Provider requests explicit u
 
 The requested OAuth scopes define exactly which identity attributes Auth0 is permitted to access.
 
-For this project, the requested scopes primarily include:
+For this application, the requested scopes primarily include:
 
 - OpenID
 - Profile
