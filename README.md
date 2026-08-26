@@ -28,7 +28,7 @@ Rather than demonstrating individual tools in isolation, Mission Auth0 Infra foc
 
 ### Project Purpose
 
-This project is designed to serve three primary purposes:
+This project is designed to serve three primary purposes.
 
 - A production-ready cloud-native engineering portfolio
 - A structured technical learning resource
