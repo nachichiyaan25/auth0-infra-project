@@ -44,5 +44,9 @@ module "auth0_infra" {
   auth0_management_api_audience = var.auth0_management_api_audience
   github_actions_public_key     = var.github_actions_public_key
 
+  db_host           = var.db_host
+  postgres_db       = var.postgres_db
+  postgres_user     = var.postgres_user
+  postgres_password = var.postgres_password
 }
 
