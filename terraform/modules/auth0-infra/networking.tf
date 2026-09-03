@@ -146,3 +146,12 @@ resource "aws_lb_target_group_attachment" "a0i_instance_1_attachment" {
 
   port = 8000
 }
+
+resource "aws_lb_target_group_attachment" "a0i_instance_2_attachment" {
+
+  target_group_arn = aws_lb_target_group.a0i_tg.arn
+
+  target_id = aws_instance.a0i_instance_2.id
+
+  port = 8000
+}
