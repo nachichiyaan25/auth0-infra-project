@@ -16,6 +16,7 @@ def profile_api(request):
             "user": request.jwt_payload
         })
 
+    # Browser Users (Django Session)
     user = request.session.get("user")
 
     if not user:
@@ -53,7 +54,7 @@ def admin_dashboard(request):
             "jwt_payload": request.jwt_payload
         })
 
-    # Browser Users
+    # Browser Users (Django Session)
     id_token = request.session.get("id_token")
 
     decoded_id_token = jwt.decode(

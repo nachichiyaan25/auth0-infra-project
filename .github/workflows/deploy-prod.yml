@@ -1,0 +1,244 @@
+name: App Deploy Prod
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  deploy-prod:
+
+    runs-on: ubuntu-latest
+
+    environment: prod
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ap-south-1
+
+      TF_VAR_secret_key: ${{ secrets.TF_VAR_SECRET_KEY }}
+      TF_VAR_auth0_client_id: ${{ secrets.TF_VAR_AUTH0_CLIENT_ID }}
+      TF_VAR_auth0_client_secret: ${{ secrets.TF_VAR_AUTH0_CLIENT_SECRET }}
+      TF_VAR_auth0_domain: ${{ secrets.TF_VAR_AUTH0_DOMAIN }}
+      TF_VAR_auth0_audience: ${{ secrets.TF_VAR_AUTH0_AUDIENCE }}
+      TF_VAR_auth0_m2m_client_id: ${{ secrets.TF_VAR_AUTH0_M2M_CLIENT_ID }}
+      TF_VAR_auth0_m2m_client_secret: ${{ secrets.TF_VAR_AUTH0_M2M_CLIENT_SECRET }}
+      TF_VAR_auth0_management_api_audience: ${{ secrets.TF_VAR_AUTH0_MANAGEMENT_API_AUDIENCE }}
+      TF_VAR_github_actions_public_key: ${{ secrets.TF_VAR_GITHUB_ACTIONS_PUBLIC_KEY }}
+
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.15.2
+
+      - name: Terraform Init
+        working-directory: terraform/environments/prod
+        run: terraform init
+
+      - name: Terraform Apply
+        working-directory: terraform/environments/prod
+        run: terraform apply -input=false -auto-approve -lock-timeout=30s
+
+      - name: Get Terraform Outputs
+        id: terraform
+        working-directory: terraform/environments/prod
+        shell: bash
+        run: |
+          echo "EC2_PUBLIC_IPS=$(terraform output -json ec2_public_ips | jq -c '.')" >> "$GITHUB_OUTPUT"
+          echo "EC2_INSTANCE_IDS=$(terraform output -json ec2_instance_ids | jq -c '.')" >> "$GITHUB_OUTPUT"
+
+      - name: Wait for EC2 Status Checks
+        shell: bash
+        run: |
+
+          echo "======================================="
+          echo "Waiting for EC2 instance status checks..."
+          echo "======================================="
+
+          INSTANCE_IDS='${{ steps.terraform.outputs.EC2_INSTANCE_IDS }}'
+
+          for INSTANCE_ID in $(echo "$INSTANCE_IDS" | jq -r '.[]'); do
+
+            echo "Waiting for EC2 instance: $INSTANCE_ID"
+
+            aws ec2 wait instance-status-ok \
+              --instance-ids "$INSTANCE_ID" \
+              --region "${{ env.AWS_DEFAULT_REGION }}"
+
+            echo "EC2 instance $INSTANCE_ID passed AWS status checks."
+
+          done
+
+          echo "======================================="
+          echo "All EC2 instances passed status checks."
+          echo "======================================="
+
+      - name: Wait for SSH Port on All EC2 Instances
+        shell: bash
+        run: |
+
+          echo "======================================="
+          echo "Waiting for SSH port 22 on all EC2 instances..."
+          echo "======================================="
+
+          PUBLIC_IPS='${{ steps.terraform.outputs.EC2_PUBLIC_IPS }}'
+
+          for HOST in $(echo "$PUBLIC_IPS" | jq -r '.[]'); do
+
+            echo "Waiting for SSH on $HOST..."
+
+            for i in {1..30}; do
+
+              if nc -z "$HOST" 22; then
+                echo "SSH port 22 is accepting connections on $HOST."
+                break
+              fi
+
+              echo "Attempt $i/30 : SSH not ready. Retrying in 5 seconds..."
+              sleep 5
+
+              if [ "$i" -eq 30 ]; then
+                echo "SSH failed to become available on $HOST."
+                exit 1
+              fi
+
+            done
+
+          done
+
+          echo "======================================="
+          echo "SSH is available on all EC2 instances."
+          echo "======================================="
+
+      - name: Deploy Application - EC2 Instance 1
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ fromJSON(steps.terraform.outputs.EC2_PUBLIC_IPS)[0] }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          command_timeout: 20m
+
+          script: |
+
+            echo "======================================="
+            echo "Waiting for cloud-init..."
+            echo "======================================="
+
+            sudo cloud-init status --wait
+
+            echo "Cloud initialization completed."
+
+            echo "======================================="
+            echo "Deploying latest application..."
+            echo "======================================="
+
+            cd ~/auth0-infra-project
+
+            git fetch origin
+            git checkout main
+            git reset --hard origin/main
+
+            docker compose down
+            docker compose up -d --build
+            docker compose ps
+            docker image prune -f
+
+            echo "Waiting for Django health endpoint..."
+
+            for i in {1..12}; do
+
+              if curl --silent --fail http://localhost:8000/api/health/ > /dev/null; then
+
+                echo "======================================="
+                echo "EC2 Instance 1 deployment successful."
+                echo "Health check passed."
+                echo "======================================="
+
+                exit 0
+              fi
+
+              echo "Attempt $i/12 : Application not ready."
+              sleep 5
+
+            done
+
+            echo "======================================="
+            echo "EC2 Instance 1 deployment failed."
+            echo "======================================="
+
+            docker compose ps
+            docker compose logs --tail=100
+
+            exit 1 
+            
+      - name: Deploy Application - EC2 Instance 2
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ fromJSON(steps.terraform.outputs.EC2_PUBLIC_IPS)[1] }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          command_timeout: 20m
+
+          script: |
+
+            echo "======================================="
+            echo "Waiting for cloud-init..."
+            echo "======================================="
+
+            sudo cloud-init status --wait
+
+            echo "Cloud initialization completed."
+
+            echo "======================================="
+            echo "Deploying latest application..."
+            echo "======================================="
+
+            cd ~/auth0-infra-project
+
+            git fetch origin
+            git checkout main
+            git reset --hard origin/main
+
+            docker compose down
+            docker compose up -d --build
+            docker compose ps
+            docker image prune -f
+
+            echo "Waiting for Django health endpoint..."
+
+            for i in {1..12}; do
+
+              if curl --silent --fail http://localhost:8000/api/health/ > /dev/null; then
+
+                echo "======================================="
+                echo "EC2 Instance 2 deployment successful."
+                echo "Health check passed."
+                echo "======================================="
+
+                exit 0
+              fi
+
+              echo "Attempt $i/12 : Application not ready."
+              sleep 5
+
+            done
+
+            echo "======================================="
+            echo "EC2 Instance 2 deployment failed."
+            echo "======================================="
+
+            docker compose ps
+            docker compose logs --tail=100
+
+            exit 1
+      
+      
+      
+      
