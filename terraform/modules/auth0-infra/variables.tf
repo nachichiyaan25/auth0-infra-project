@@ -121,3 +121,24 @@ variable "github_actions_public_key" {
   description = "GitHub Actions SSH Public Key"
   type        = string
 }
+
+
+# Database Variables
+
+variable "db_host" {
+  type    = string
+  default = "db"
+}
+
+variable "postgres_db" {
+  type = string
+}
+
+variable "postgres_user" {
+  type = string
+}
+
+variable "postgres_password" {
+  type      = string
+  sensitive = true
+}
