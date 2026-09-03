@@ -33,3 +33,19 @@ variable "auth0_management_api_audience" {
 variable "github_actions_public_key" {
   type = string
 }
+
+variable "db_host" {
+  type = string
+} 
+
+variable "postgres_db" {
+  type = string
+}
+
+variable "postgres_user" {
+  type = string
+}
+
+variable "postgres_password" {
+  type = string
+}

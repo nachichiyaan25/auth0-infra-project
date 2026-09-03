@@ -28,6 +28,11 @@ jobs:
       TF_VAR_auth0_management_api_audience: ${{ secrets.TF_VAR_AUTH0_MANAGEMENT_API_AUDIENCE }}
       TF_VAR_github_actions_public_key: ${{ secrets.TF_VAR_GITHUB_ACTIONS_PUBLIC_KEY }}
 
+      TF_VAR_db_host: ${{ secrets.TF_VAR_DB_HOST }}
+      TF_VAR_postgres_db: ${{ secrets.TF_VAR_POSTGRES_DB }}
+      TF_VAR_postgres_user: ${{ secrets.TF_VAR_POSTGRES_USER }}
+      TF_VAR_postgres_password: ${{ secrets.TF_VAR_POSTGRES_PASSWORD }}
+
     steps:
 
       - name: Checkout Code
