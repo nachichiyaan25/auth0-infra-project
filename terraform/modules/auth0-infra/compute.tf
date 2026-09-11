@@ -17,10 +17,10 @@ locals {
 
       alb_dns_name = aws_lb.a0i_alb.dns_name
 
-      db_host           = var.db_host
       postgres_db       = var.postgres_db
       postgres_user     = var.postgres_user
       postgres_password = var.postgres_password
+      db_host           = var.db_host
     }
   )
 
