@@ -16,10 +16,7 @@ ALLOWED_HOSTS=localhost,127.0.0.1,${alb_dns_name}
 
 DEBUG=False
 
-DB_HOST=${db_host}
-
 POSTGRES_DB=${postgres_db}
-
 POSTGRES_USER=${postgres_user}
-
 POSTGRES_PASSWORD=${postgres_password}
+DB_HOST=${db_host}
